@@ -48,7 +48,51 @@
       --transition-fast: 0.2s ease;
       --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      /* Card width responsive */
+      --card-width: 220px;
     }
+
+    /* ─── DARK MODE ─── */
+    [data-theme="dark"] {
+      --sakura-pink: #F6A0B0;
+      --warm-heart-red: #E86A7A;
+      --cream-white: #1E1A1B;
+      --milky-white: #141213;
+      --lavender-mist: #1F1B2E;
+      --light-gray-pink: #2A2426;
+      --lavender-soft: #9B82CC;
+      --sky-pastel: #7BA8C4;
+      --mint-calm: #7DBF8D;
+      --text-main: #F0ECEE;
+      --text-muted: #B0A8AA;
+      --text-light: #706870;
+      --glass-bg: rgba(20, 18, 19, 0.85);
+      --glass-border: rgba(246, 160, 176, 0.2);
+      --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+    [data-theme="dark"] body { background-color: var(--milky-white); }
+    [data-theme="dark"] .list-section { background: #1A1618; }
+    [data-theme="dark"] .footer { background: #1A1618; }
+    [data-theme="dark"] .anime-card .card-img-wrapper { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    [data-theme="dark"] .genre-chip { background: #2A2426; border-color: rgba(246,160,176,0.15); }
+    [data-theme="dark"] .modal-card { background: #1E1A1B; }
+    [data-theme="dark"] .form-group input { background: #2A2426; border-color: rgba(246,160,176,0.2); color: var(--text-main); }
+    [data-theme="dark"] .form-group input:focus { background: #2E282A; }
+    [data-theme="dark"] .ep-btn { background: #2A2426; border-color: rgba(246,160,176,0.15); color: var(--text-main); }
+    [data-theme="dark"] .ep-btn.active { background: var(--sakura-pink); color: #141213; }
+    [data-theme="dark"] .toast { background: #2A2426; color: var(--text-main); }
+    [data-theme="dark"] .player-container { background: #1A1618; }
+    [data-theme="dark"] .player-sidebar { background: #1A1618; border-color: #2A2426; }
+    [data-theme="dark"] .episodes-panel { background: #1A1618; }
+    [data-theme="dark"] .google-btn { background: #2A2426; border-color: #3A3234; color: var(--text-main); }
+    [data-theme="dark"] .google-btn:hover { background: #2E282A; }
+    [data-theme="dark"] .search-overlay { background: rgba(20,18,19,0.97); }
+    [data-theme="dark"] #search-input { color: var(--text-main); }
+    [data-theme="dark"] .warning-card { background: #2A2426; color: var(--text-main); }
+    [data-theme="dark"] .warning-steps { background: #1E1A1B; }
+    [data-theme="dark"] .next-episode-banner { background: linear-gradient(to right, #9B3A4A, #7A6A99); }
 
     /* ─── RESET & BASE ─── */
     * {
@@ -132,6 +176,42 @@
 
     .hamburger { display: none; flex-direction: column; gap: 5px; width: 30px; z-index: 101; }
     .hamburger span { display: block; width: 100%; height: 3px; background-color: var(--text-main); border-radius: 3px; transition: var(--transition-smooth); }
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    /* ─── DARK MODE TOGGLE ─── */
+    .dark-mode-btn { color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); font-size: 1.15rem; }
+    .dark-mode-btn:hover { background: var(--light-gray-pink); }
+
+    /* ─── MOBILE DRAWER ─── */
+    .mobile-drawer-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 99; backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.3s ease; }
+    .mobile-drawer-overlay.open { opacity: 1; }
+    .mobile-drawer { position: fixed; top: 0; right: -100%; width: min(300px, 85vw); height: 100%; background: var(--milky-white); z-index: 200; padding: 5rem 2rem 2rem; display: flex; flex-direction: column; gap: 0.5rem; box-shadow: -4px 0 24px rgba(0,0,0,0.15); transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mobile-drawer.open { right: 0; }
+    .mobile-drawer .nav-link { font-size: 1.2rem; padding: 1rem 0; border-bottom: 1px solid var(--light-gray-pink); display: block; font-weight: 600; }
+    .mobile-drawer-auth { margin-top: auto; display: flex; flex-direction: column; gap: 0.8rem; }
+
+    /* ─── BOTTOM TAB BAR (mobile only) ─── */
+    .bottom-tab-bar { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 60px; background: var(--glass-bg); backdrop-filter: blur(16px); border-top: 1px solid var(--glass-border); z-index: 90; padding-bottom: env(safe-area-inset-bottom); }
+    .bottom-tabs { display: flex; align-items: center; justify-content: space-around; height: 100%; }
+    .bottom-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--text-light); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.5px; transition: var(--transition-fast); padding: 6px 12px; border-radius: var(--radius-sm); }
+    .bottom-tab svg { width: 22px; height: 22px; }
+    .bottom-tab.active { color: var(--warm-heart-red); }
+    .bottom-tab:active { background: var(--light-gray-pink); transform: scale(0.92); }
+
+    /* ─── SCROLL TO TOP FAB ─── */
+    .fab-scroll-top { position: fixed; bottom: 2rem; right: 1.5rem; width: 46px; height: 46px; background: var(--warm-heart-red); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(232, 106, 122, 0.4); z-index: 80; opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .fab-scroll-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .fab-scroll-top svg { width: 20px; height: 20px; }
+
+    /* ─── SKELETON LOADING ─── */
+    .skeleton { background: linear-gradient(90deg, var(--light-gray-pink) 25%, var(--milky-white) 50%, var(--light-gray-pink) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius-md); }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton-card { flex: 0 0 auto; width: var(--card-width); display: flex; flex-direction: column; gap: 0.8rem; }
+    .skeleton-img { width: 100%; aspect-ratio: 2/3; border-radius: var(--radius-md); }
+    .skeleton-text { height: 14px; border-radius: 4px; width: 80%; }
+    .skeleton-text.short { width: 50%; height: 11px; }
 
     .search-overlay {
       position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(250, 250, 251, 0.95); backdrop-filter: blur(8px); z-index: 200; display: flex; flex-direction: column; align-items: center; padding-top: 15vh; opacity: 0; visibility: hidden; transition: var(--transition-smooth);
@@ -206,14 +286,17 @@
     .carousel-btn:hover { background: var(--sakura-pink); color: white; transform: translateY(-50%) scale(1.1); }
     .carousel-prev { left: -20px; }
     .carousel-next { right: -20px; }
-    .anime-row { display: flex; gap: 1.5rem; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 1rem 0; }
+    .carousel-fade-right { position: absolute; top: 0; right: 0; width: 60px; height: 100%; background: linear-gradient(to right, transparent, var(--milky-white)); pointer-events: none; z-index: 5; border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+    .lavender-bg .carousel-fade-right { background: linear-gradient(to right, transparent, var(--lavender-mist)); }
+    .anime-row { display: flex; gap: 1.5rem; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 1rem 0; scroll-snap-type: x mandatory; }
     .anime-row::-webkit-scrollbar { display: none; }
 
-    .anime-card { flex: 0 0 auto; width: 220px; display: flex; flex-direction: column; gap: 0.8rem; cursor: pointer; }
+    .anime-card { flex: 0 0 auto; width: var(--card-width); display: flex; flex-direction: column; gap: 0.8rem; cursor: pointer; scroll-snap-align: start; -webkit-tap-highlight-color: transparent; }
     .card-img-wrapper { position: relative; width: 100%; aspect-ratio: 2 / 3; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); }
     .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
     .anime-card:hover .card-img-wrapper { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
     .anime-card:hover .card-img { transform: scale(1.05); }
+    .anime-card:active .card-img-wrapper { transform: scale(0.97); }
     .card-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(250, 250, 251, 0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--transition-smooth); }
     .anime-card:hover .card-overlay { opacity: 1; }
     .play-text { background: var(--sakura-pink); color: white; padding: 0.6rem 1.2rem; border-radius: var(--radius-round); font-weight: 600; font-size: 0.9rem; transform: translateY(10px); transition: var(--transition-bounce); box-shadow: 0 4px 12px rgba(246, 183, 193, 0.5); }
@@ -222,6 +305,8 @@
     .card-add-btn { position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, 0.8); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; opacity: 0; transition: var(--transition-fast); }
     .card-add-btn:hover { background: var(--warm-heart-red); color: white; }
     .anime-card:hover .card-add-btn { opacity: 1; }
+    @media (hover: none) { .card-add-btn { opacity: 1; } .card-overlay { opacity: 1; backdrop-filter: none; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); } .play-text { transform: translateY(0); } }
+    @media (max-width: 768px) { .ctrl-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; } .controls-row { gap: 0.5rem; } .volume-range { width: 60px; } }
     .card-info { display: flex; flex-direction: column; }
     .card-title { font-size: 1.05rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: var(--transition-fast); }
     .anime-card:hover .card-title { color: var(--warm-heart-red); }
@@ -424,7 +509,53 @@
     .footer-socials a:hover { color: var(--sakura-pink); }
 
     @media (max-width: 1024px) { .hero { flex-direction: column; padding-top: 120px; text-align: center; } .hero-content { padding-left: 0; display: flex; flex-direction: column; align-items: center; margin-bottom: 3rem; } .hero-title { font-size: 3.5rem; } }
-    @media (max-width: 768px) { .nav-links, .nav-actions { display: none; } .hamburger { display: flex; } .hero-title { font-size: 2.5rem; } .hero-stats { gap: 1rem; } .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; } .footer-top { flex-direction: column; } }
+    @media (max-width: 768px) {
+      .nav-links, .nav-actions { display: none; }
+      .hamburger { display: flex; }
+      .dark-mode-btn { display: flex !important; }
+      .hero-title { font-size: 2.2rem; }
+      .hero-desc { font-size: 1rem; }
+      .hero-stats { gap: 1rem; }
+      .hero-buttons { flex-direction: column; align-items: center; width: 100%; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .featured-card { width: 220px; height: 330px; transform: none; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .section-title { font-size: 1.5rem; }
+      .footer-top { flex-direction: column; }
+      .footer-links { gap: 2rem; }
+      .container { padding: 0 1rem; }
+      .anime-section { padding: 2.5rem 0; }
+      .anime-section.lavender-bg { margin: 1rem 0.5rem; border-radius: 24px; }
+      :root { --card-width: 160px; }
+      .bottom-tab-bar { display: block; }
+      .toast-container { bottom: calc(60px + 1rem); right: 50%; transform: translateX(50%); align-items: center; }
+      .fab-scroll-top { bottom: calc(60px + 1rem); }
+      .hero { min-height: 70vh; }
+      .hero-visual { margin-top: 1.5rem; }
+      body { padding-bottom: 60px; }
+      .search-overlay { padding-top: 10vh; }
+      #search-input { font-size: 1.1rem; padding: 1rem 3rem 1rem 3.5rem; }
+      .search-results { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+      .genre-chips { padding-bottom: 0.5rem; gap: 0.6rem; }
+      .genre-chip { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
+      .list-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+      .list-section { padding: 2.5rem 0; }
+    }
+    @media (max-width: 480px) {
+      :root { --card-width: 140px; }
+      .hero-title { font-size: 1.8rem; }
+      .hero-badge { font-size: 0.78rem; }
+      .nav-inner { padding: 0 1rem; }
+      .modal-card { padding: 1.5rem; }
+    }
+    /* Bottom sheet modals on mobile */
+    @media (max-width: 768px) {
+      .modal-overlay { align-items: flex-end; padding: 0; }
+      .modal-card { width: 100%; max-width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; transform: translateY(40px); max-height: 90vh; overflow-y: auto; padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom)); }
+      .modal-overlay.active .modal-card { transform: translateY(0); }
+      .modal-card::before { content: ''; display: block; width: 40px; height: 4px; background: var(--light-gray-pink); border-radius: 2px; margin: 0 auto 1.5rem; }
+      .shortcuts-modal-card { max-height: 85vh; }
+    }
   </style>
 </head>
 <body>
@@ -444,6 +575,7 @@
         <li><a href="#list-section" class="nav-link" id="nav-list">Listem</a></li>
       </ul>
       <div class="nav-actions">
+        <button class="dark-mode-btn" id="dark-mode-toggle" aria-label="Karanlık Mod">🌙</button>
         <button class="search-btn" id="search-toggle-btn" aria-label="Ara">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         </button>
@@ -457,7 +589,44 @@
     </div>
   </nav>
 
-  <!-- ─── SEARCH OVERLAY ─── -->
+  <!-- ─── MOBILE DRAWER ─── -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
+  <div class="mobile-drawer" id="mobile-drawer">
+    <a href="#" class="nav-link" id="drawer-home">🏠 Ana Sayfa</a>
+    <a href="#anime-section" class="nav-link" id="drawer-anime">📺 Animeler</a>
+    <a href="#popular-section" class="nav-link" id="drawer-popular">🔥 Popüler</a>
+    <a href="#list-section" class="nav-link" id="drawer-list">📚 Listem</a>
+    <div class="mobile-drawer-auth" id="mobile-drawer-auth">
+      <button class="login-btn" id="drawer-login-btn" style="text-align:center;">Giriş Yap</button>
+    </div>
+  </div>
+
+  <!-- ─── BOTTOM TAB BAR ─── -->
+  <nav class="bottom-tab-bar" id="bottom-tab-bar">
+    <div class="bottom-tabs">
+      <a href="#" class="bottom-tab active" id="btab-home">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        Ana Sayfa
+      </a>
+      <button class="bottom-tab" id="btab-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Ara
+      </button>
+      <a href="#list-section" class="bottom-tab" id="btab-list">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+        Listem
+      </a>
+      <button class="bottom-tab" id="btab-darkmode">
+        <svg viewBox="0 0 24 24" fill="currentColor" id="btab-moon-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        Tema
+      </button>
+    </div>
+  </nav>
+
+  <!-- ─── SCROLL TO TOP FAB ─── -->
+  <button class="fab-scroll-top" id="fab-scroll-top" aria-label="Başa Dön">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+  </button>
   <div class="search-overlay" id="search-overlay">
     <div class="search-box">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -536,6 +705,7 @@
       <div class="carousel-wrapper">
         <button class="carousel-btn carousel-prev" id="continue-prev" aria-label="Geri">‹</button>
         <div class="anime-row" id="continue-row"></div>
+        <div class="carousel-fade-right"></div>
         <button class="carousel-btn carousel-next" id="continue-next" aria-label="İleri">›</button>
       </div>
     </div>
@@ -554,6 +724,7 @@
       <div class="carousel-wrapper">
         <button class="carousel-btn carousel-prev" id="popular-prev" aria-label="Geri">‹</button>
         <div class="anime-row" id="popular-row"></div>
+        <div class="carousel-fade-right"></div>
         <button class="carousel-btn carousel-next" id="popular-next" aria-label="İleri">›</button>
       </div>
     </div>
@@ -572,6 +743,7 @@
       <div class="carousel-wrapper">
         <button class="carousel-btn carousel-prev" id="new-prev" aria-label="Geri">‹</button>
         <div class="anime-row" id="new-row"></div>
+        <div class="carousel-fade-right"></div>
         <button class="carousel-btn carousel-next" id="new-next" aria-label="İleri">›</button>
       </div>
     </div>
@@ -590,6 +762,7 @@
       <div class="carousel-wrapper">
         <button class="carousel-btn carousel-prev" id="rec-prev" aria-label="Geri">‹</button>
         <div class="anime-row" id="rec-row"></div>
+        <div class="carousel-fade-right"></div>
         <button class="carousel-btn carousel-next" id="rec-next" aria-label="İleri">›</button>
       </div>
     </div>
@@ -603,6 +776,7 @@
           <span class="section-icon">📚</span>
           <h2 class="section-title">Listem</h2>
         </div>
+        <button id="export-list-btn" style="background: none; border: 1px solid var(--glass-border); border-radius: var(--radius-round); padding: 0.4rem 1rem; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; font-family: inherit; transition: var(--transition-fast);" title="Listeyi JSON olarak dışa aktar">⬇️ Dışa Aktar</button>
       </div>
       <div class="list-tabs">
         <button class="list-tab active" data-tab="watchlist" id="tab-watchlist">İzlenecekler</button>
@@ -1706,6 +1880,7 @@
 
       onAuthStateChanged(auth, async (user) => {
         updateAuthUI(user);
+        updateDrawerAuth(user);
         if (user) {
           const cloudData = await loadUserListsFromCloud(user.uid);
           userLists = cloudData ? { watchlist: cloudData.watchlist || [], completed: cloudData.completed || [], favorites: cloudData.favorites || [] } : { watchlist: [], completed: [], favorites: [] };
@@ -1733,6 +1908,75 @@
           populateRow('popular-row', chip.dataset.genre === 'all' ? animes : animes.filter(a => a.genre.toLowerCase() === genre.toLowerCase()));
         };
       });
+
+      // ─── DARK MODE ───
+      const htmlEl = document.documentElement;
+      const savedTheme = localStorage.getItem('kokoro-theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) { htmlEl.setAttribute('data-theme', 'dark'); document.getElementById('dark-mode-toggle').textContent = '☀️'; document.getElementById('btab-moon-icon')?.setAttribute('d', 'M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z'); }
+      const toggleDarkMode = () => {
+        const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+        htmlEl.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        localStorage.setItem('kokoro-theme', isDark ? 'light' : 'dark');
+        document.getElementById('dark-mode-toggle').textContent = isDark ? '🌙' : '☀️';
+        showToast(isDark ? 'Aydınlık mod aktif ☀️' : 'Karanlık mod aktif 🌙', '🎨');
+      };
+      document.getElementById('dark-mode-toggle').onclick = toggleDarkMode;
+      document.getElementById('btab-darkmode')?.addEventListener('click', toggleDarkMode);
+
+      // ─── MOBILE DRAWER ───
+      const drawer = document.getElementById('mobile-drawer'), drawerOverlay = document.getElementById('mobile-drawer-overlay'), hamburger = document.getElementById('hamburger');
+      const openDrawer = () => { drawer.classList.add('open'); drawerOverlay.style.display = 'block'; requestAnimationFrame(() => drawerOverlay.classList.add('open')); hamburger.classList.add('open'); document.body.style.overflow = 'hidden'; };
+      const closeDrawer = () => { drawer.classList.remove('open'); drawerOverlay.classList.remove('open'); hamburger.classList.remove('open'); setTimeout(() => { if (!drawer.classList.contains('open')) drawerOverlay.style.display = 'none'; }, 300); document.body.style.overflow = ''; };
+      hamburger.onclick = () => drawer.classList.contains('open') ? closeDrawer() : openDrawer();
+      drawerOverlay.onclick = closeDrawer;
+      document.querySelectorAll('.mobile-drawer .nav-link').forEach(l => l.onclick = closeDrawer);
+      document.getElementById('drawer-login-btn').onclick = () => { closeDrawer(); document.getElementById('login-modal').classList.add('active'); };
+
+      // ─── FAB SCROLL TO TOP ───
+      const fab = document.getElementById('fab-scroll-top');
+      window.addEventListener('scroll', () => { fab.classList.toggle('visible', window.scrollY > 400); }, { passive: true });
+      fab.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // ─── BOTTOM TABS ───
+      document.getElementById('btab-search')?.addEventListener('click', () => { document.getElementById('search-overlay').classList.add('active'); setTimeout(() => document.getElementById('search-input').focus(), 100); });
+
+      // ─── EXPORT WATCHLIST ───
+      document.getElementById('export-list-btn')?.addEventListener('click', () => {
+        const exportData = { exportDate: new Date().toISOString(), watchlist: userLists.watchlist.map(id => { const a = animes.find(x => x.id === id); return a ? { id: a.id, title: a.title, genre: a.genre } : { id }; }), completed: userLists.completed.map(id => { const a = animes.find(x => x.id === id); return a ? { id: a.id, title: a.title, genre: a.genre } : { id }; }), favorites: userLists.favorites.map(id => { const a = animes.find(x => x.id === id); return a ? { id: a.id, title: a.title, genre: a.genre } : { id }; }) };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'kokoro-liste.json'; a.click(); URL.revokeObjectURL(url);
+        showToast('Liste dışa aktarıldı! 📦', '✨');
+      });
+
+      // ─── ? SHORTCUT FOR KEYBOARD SHORTCUTS MODAL ───
+      document.addEventListener('keydown', (e) => {
+        if (e.key === '?' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+          document.getElementById('shortcuts-modal').classList.add('active');
+        }
+      });
+
+      // ─── SKELETON LOADERS: show on init, remove when populated ───
+      const showSkeletons = (rowId, count = 6) => {
+        const row = document.getElementById(rowId); if (!row) return;
+        row.innerHTML = Array.from({length: count}, () => `<div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text short"></div></div>`).join('');
+      };
+      showSkeletons('popular-row'); showSkeletons('new-row'); showSkeletons('rec-row');
+
+      // ─── UPDATE DRAWER AUTH UI ───
+      const origUpdateAuthUI = updateAuthUI;
+      const updateDrawerAuth = (user) => {
+        const da = document.getElementById('mobile-drawer-auth'); if (!da) return;
+        if (user && !user.isAnonymous) {
+          da.innerHTML = `<span style="font-weight:600;color:var(--text-main);">${user.displayName || user.email.split('@')[0]}</span><button class="ep-btn" id="drawer-settings-btn" style="text-align:center;">⚙️ Ayarlar</button><button class="ep-btn" id="drawer-logout-btn" style="text-align:center;color:var(--warm-heart-red);">Çıkış Yap 🚪</button>`;
+          document.getElementById('drawer-settings-btn').onclick = () => { closeDrawer(); document.getElementById('nav-settings-btn')?.click(); };
+          document.getElementById('drawer-logout-btn').onclick = async () => { closeDrawer(); await signOut(auth); showToast('Çıkış yapıldı 👋'); };
+        } else {
+          da.innerHTML = `<button class="login-btn" id="drawer-login-btn" style="text-align:center;">Giriş Yap</button>`;
+          document.getElementById('drawer-login-btn').onclick = () => { closeDrawer(); document.getElementById('login-modal').classList.add('active'); };
+        }
+      };
 
       // İlk yüklemede popüler anime satırını doldur
       populateRow('popular-row', animes);
