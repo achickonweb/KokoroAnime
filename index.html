@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kokoro Anime – Ruhunu Dinlendiren Anime Dünyası</title>
+  <meta name="description" content="Kokoro Anime, rahatlatıcı pastel tasarımıyla anime izleme deneyimini yeniden tanımlıyor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet" />
+  
+  <!-- HLS Stream Oynatma Desteği için Hls.js Kütüphanesi -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js"></script>
+
+  <style>
+    :root {
+      /* Brand Colors */
+      --sakura-pink: #F6B7C1;
+      --warm-heart-red: #E86A7A;
+      --cream-white: #FFF6F7;
+
+      /* UI Backgrounds */
+      --milky-white: #FAFAFB;
+      --lavender-mist: #EDE7F6;
+      --light-gray-pink: #F3F0F2;
+
+      /* Secondary / Accent */
+      --lavender-soft: #C9B6E4;
+      --sky-pastel: #BFD7EA;
+      --mint-calm: #CDEDD6;
+
+      /* Text Colors */
+      --text-main: #2E2A2B;
+      --text-muted: #6E6A6C;
+      --text-light: #A8A4A6;
+
+      /* Other vars */
+      --glass-bg: rgba(250, 250, 251, 0.7);
+      --glass-border: rgba(246, 183, 193, 0.3);
+      --shadow-soft: 0 8px 24px rgba(201, 182, 228, 0.15);
+      --shadow-hover: 0 12px 32px rgba(246, 183, 193, 0.3);
+      
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-round: 999px;
+
+      --transition-fast: 0.2s ease;
+      --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ─── RESET & BASE ─── */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--milky-white);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    h1, h2, h3, h4 { font-weight: 700; color: var(--text-main); }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      z-index: 100;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: var(--transition-smooth);
+    }
+
+    .navbar.scrolled {
+      height: 70px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo { display: flex; align-items: center; gap: 0.5rem; }
+    .logo-kanji { font-family: 'Noto Sans JP', sans-serif; font-size: 2rem; color: var(--sakura-pink); font-weight: 500; text-shadow: 0 0 10px rgba(246, 183, 193, 0.5); }
+    .logo-kanji.small { font-size: 1.5rem; }
+    .logo-text { font-size: 1.25rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); }
+    .logo-sub { font-size: 0.85rem; font-weight: 600; letter-spacing: 1px; color: var(--sakura-pink); margin-top: 2px; }
+
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-link { font-weight: 500; color: var(--text-muted); font-size: 0.95rem; transition: var(--transition-fast); position: relative; }
+    .nav-link:hover, .nav-link.active { color: var(--sakura-pink); }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background-color: var(--sakura-pink); transition: var(--transition-smooth); border-radius: 2px;
+    }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    .nav-actions { display: flex; align-items: center; gap: 1.5rem; }
+    .search-btn { color: var(--text-main); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+    .search-btn:hover { background: var(--light-gray-pink); color: var(--sakura-pink); }
+    .search-btn svg { width: 20px; height: 20px; }
+
+    .login-btn {
+      background-color: var(--warm-heart-red); color: white; padding: 0.6rem 1.5rem; border-radius: var(--radius-round); font-weight: 600; font-size: 0.9rem; transition: var(--transition-smooth); box-shadow: 0 4px 12px rgba(232, 106, 122, 0.2);
+    }
+    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(232, 106, 122, 0.4); background-color: #d85a6a; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; width: 30px; z-index: 101; }
+    .hamburger span { display: block; width: 100%; height: 3px; background-color: var(--text-main); border-radius: 3px; transition: var(--transition-smooth); }
+
+    .search-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(250, 250, 251, 0.95); backdrop-filter: blur(8px); z-index: 200; display: flex; flex-direction: column; align-items: center; padding-top: 15vh; opacity: 0; visibility: hidden; transition: var(--transition-smooth);
+    }
+    .search-overlay.active { opacity: 1; visibility: visible; }
+    .search-box { position: relative; width: 100%; max-width: 800px; padding: 0 2rem; transform: translateY(-20px); transition: var(--transition-smooth); }
+    .search-overlay.active .search-box { transform: translateY(0); }
+    .search-icon { position: absolute; left: 3.5rem; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; color: var(--sakura-pink); }
+    #search-input { width: 100%; padding: 1.5rem 4rem 1.5rem 4.5rem; font-size: 1.5rem; border: none; border-bottom: 2px solid var(--sakura-pink); background: transparent; color: var(--text-main); font-family: inherit; outline: none; }
+    #search-input::placeholder { color: var(--text-light); }
+    #search-close { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); font-size: 2rem; color: var(--text-muted); transition: var(--transition-fast); }
+    #search-close:hover { color: var(--warm-heart-red); }
+    .search-results { width: 100%; max-width: 800px; margin-top: 2rem; padding: 0 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem; }
+
+    .hero { position: relative; min-height: 90vh; display: flex; align-items: center; padding-top: 80px; overflow: hidden; }
+    .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--cream-white) 0%, var(--lavender-mist) 50%, var(--sakura-pink) 100%); opacity: 0.3; z-index: -2; }
+    .sakura-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    .sakura-petal { position: absolute; background: #ffb7c5; border-radius: 15px 0 15px 0; opacity: 0.6; animation: fall linear infinite; }
+    @keyframes fall {
+      0% { transform: translateY(-10vh) translateX(0) rotate(0deg); }
+      100% { transform: translateY(110vh) translateX(20vw) rotate(360deg); }
+    }
+    .hero-gradient { position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, var(--milky-white), transparent); z-index: -1; }
+    .hero-content { flex: 1; padding-left: 10%; z-index: 10; }
+    .hero-badge { display: inline-block; padding: 0.4rem 1rem; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(4px); border: 1px solid var(--sakura-pink); border-radius: var(--radius-round); font-size: 0.85rem; font-weight: 600; color: var(--warm-heart-red); margin-bottom: 1.5rem; }
+    .hero-title { font-size: 4.5rem; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -1px; }
+    .hero-title em { font-style: normal; background: linear-gradient(45deg, var(--warm-heart-red), var(--sakura-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-desc { font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 500px; }
+    .hero-buttons { display: flex; gap: 1rem; margin-bottom: 3rem; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--warm-heart-red); color: white; padding: 1rem 2rem; border-radius: var(--radius-round); font-size: 1.1rem; font-weight: 600; transition: var(--transition-bounce); box-shadow: 0 8px 24px rgba(232, 106, 122, 0.3); }
+    .btn-primary:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 32px rgba(232, 106, 122, 0.4); }
+    .btn-primary svg { width: 20px; height: 20px; }
+    .btn-secondary { display: inline-flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(4px); color: var(--text-main); padding: 1rem 2rem; border-radius: var(--radius-round); font-size: 1.1rem; font-weight: 600; transition: var(--transition-smooth); border: 1px solid var(--glass-border); }
+    .btn-secondary:hover { background: white; border-color: var(--sakura-pink); color: var(--warm-heart-red); }
+    .hero-stats { display: flex; align-items: center; gap: 2rem; }
+    .stat { display: flex; flex-direction: column; }
+    .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+    .stat-divider { width: 1px; height: 30px; background: var(--glass-border); }
+    
+    .hero-visual { flex: 1; display: flex; justify-content: center; align-items: center; perspective: 1000px; }
+    .featured-card { position: relative; width: 320px; height: 480px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 20px 40px rgba(201, 182, 228, 0.3); transform: rotateY(-15deg) rotateX(5deg); transition: transform 0.5s ease, box-shadow 0.5s ease; cursor: pointer; }
+    .featured-card:hover { transform: rotateY(0) rotateX(0) scale(1.05); box-shadow: 0 30px 60px rgba(246, 183, 193, 0.4); }
+    .featured-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .featured-card:hover .featured-img { transform: scale(1.05); }
+    .featured-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem; background: linear-gradient(to top, rgba(46, 42, 43, 0.9), transparent); color: white; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+    .featured-badge { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); padding: 0.3rem 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; color: #fbbf24; }
+    .featured-info h3 { font-size: 1.5rem; color: white; margin: 0; }
+    .featured-info p { font-size: 0.9rem; color: rgba(255, 255, 255, 0.8); margin: 0; }
+    .featured-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; background: var(--warm-heart-red); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--transition-bounce); box-shadow: 0 0 20px rgba(232, 106, 122, 0.6); }
+    .featured-play svg { width: 30px; height: 30px; margin-left: 4px; }
+    .featured-card:hover .featured-play { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+    .genre-section { padding: 2rem 0; background: var(--milky-white); position: relative; z-index: 10; }
+    .genre-chips { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; scrollbar-width: none; }
+    .genre-chips::-webkit-scrollbar { display: none; }
+    .genre-chip { white-space: nowrap; padding: 0.6rem 1.2rem; background: white; border: 1px solid var(--glass-border); border-radius: var(--radius-round); font-size: 0.95rem; font-weight: 500; color: var(--text-muted); transition: var(--transition-smooth); box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .genre-chip:hover { border-color: var(--sakura-pink); color: var(--warm-heart-red); transform: translateY(-2px); }
+    .genre-chip.active { background: var(--sakura-pink); color: white; border-color: var(--sakura-pink); box-shadow: 0 4px 12px rgba(246, 183, 193, 0.4); }
+
+    .anime-section { padding: 4rem 0; overflow: hidden; }
+    .anime-section.lavender-bg { background-color: var(--lavender-mist); border-radius: 40px; margin: 2rem 1rem; }
+    .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+    .section-title-group { display: flex; align-items: center; gap: 0.8rem; }
+    .section-icon { font-size: 2rem; }
+    .section-title { font-size: 2rem; letter-spacing: -0.5px; }
+    .see-all { color: var(--sakura-pink); font-weight: 600; font-size: 0.95rem; transition: var(--transition-fast); }
+    .see-all:hover { color: var(--warm-heart-red); transform: translateX(4px); }
+    .carousel-wrapper { position: relative; }
+    .carousel-btn { position: absolute; top: 40%; transform: translateY(-50%); width: 48px; height: 48px; background: white; color: var(--text-main); border-radius: 50%; font-size: 2rem; display: flex; align-items: center; justify-content: center; line-height: 1; box-shadow: 0 4px 12px rgba(0,0,0,0.1); z-index: 10; transition: var(--transition-smooth); opacity: 0; }
+    .carousel-wrapper:hover .carousel-btn { opacity: 1; }
+    .carousel-btn:hover { background: var(--sakura-pink); color: white; transform: translateY(-50%) scale(1.1); }
+    .carousel-prev { left: -20px; }
+    .carousel-next { right: -20px; }
+    .anime-row { display: flex; gap: 1.5rem; overflow-x: auto; scroll-behavior: smooth; scrollbar-width: none; padding: 1rem 0; }
+    .anime-row::-webkit-scrollbar { display: none; }
+
+    .anime-card { flex: 0 0 auto; width: 220px; display: flex; flex-direction: column; gap: 0.8rem; cursor: pointer; }
+    .card-img-wrapper { position: relative; width: 100%; aspect-ratio: 2 / 3; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-soft); transition: var(--transition-smooth); }
+    .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .anime-card:hover .card-img-wrapper { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+    .anime-card:hover .card-img { transform: scale(1.05); }
+    .card-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(250, 250, 251, 0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; transition: var(--transition-smooth); }
+    .anime-card:hover .card-overlay { opacity: 1; }
+    .play-text { background: var(--sakura-pink); color: white; padding: 0.6rem 1.2rem; border-radius: var(--radius-round); font-weight: 600; font-size: 0.9rem; transform: translateY(10px); transition: var(--transition-bounce); box-shadow: 0 4px 12px rgba(246, 183, 193, 0.5); }
+    .anime-card:hover .play-text { transform: translateY(0); }
+    .card-badge { position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.6); color: #fbbf24; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; backdrop-filter: blur(4px); }
+    .card-add-btn { position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, 0.8); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; opacity: 0; transition: var(--transition-fast); }
+    .card-add-btn:hover { background: var(--warm-heart-red); color: white; }
+    .anime-card:hover .card-add-btn { opacity: 1; }
+    .card-info { display: flex; flex-direction: column; }
+    .card-title { font-size: 1.05rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: var(--transition-fast); }
+    .anime-card:hover .card-title { color: var(--warm-heart-red); }
+    .card-meta { font-size: 0.85rem; color: var(--text-light); }
+
+    .list-section { padding: 4rem 0; background: white; }
+    .list-tabs { display: flex; gap: 2rem; margin-bottom: 2rem; border-bottom: 2px solid var(--light-gray-pink); }
+    .list-tab { padding: 1rem 0; font-size: 1.1rem; font-weight: 600; color: var(--text-muted); position: relative; transition: var(--transition-fast); }
+    .list-tab.active { color: var(--sakura-pink); }
+    .list-tab::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background: var(--sakura-pink); transform: scaleX(0); transition: var(--transition-smooth); }
+    .list-tab.active::after { transform: scaleX(1); }
+    .list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 2rem; min-height: 300px; }
+    .list-grid-empty { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-light); gap: 1rem; }
+    .empty-icon { font-size: 3rem; opacity: 0.5; }
+
+    .player-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); }
+    .player-modal.active { opacity: 1; visibility: visible; }
+    .player-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); }
+    
+    .player-container { position: relative; width: 95%; max-width: 1200px; height: 85vh; max-height: 750px; background: var(--milky-white); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transform: scale(0.95) translateY(20px); transition: transform var(--transition-bounce), cursor 0.3s ease; box-shadow: 0 24px 48px rgba(0,0,0,0.5); }
+    .player-container.layout-split { flex-direction: row; height: 85vh; max-height: 750px; align-items: stretch; }
+    .player-main { flex: 1; position: relative; display: flex; flex-direction: column; background: #000; height: 100%; min-height: 0; }
+    .player-sidebar { width: 320px; display: flex; flex-direction: column; background: var(--milky-white); border-left: 1px solid var(--light-gray-pink); height: 100%; overflow-y: auto; min-height: 0; }
+    
+    @media (max-width: 900px) {
+      .player-container.layout-split { flex-direction: column; height: 95vh; max-height: none; }
+      .player-main { flex: 0 0 auto; aspect-ratio: 16 / 9; height: auto; }
+      .player-sidebar { width: 100%; flex: 1; border-left: none; border-top: 1px solid var(--light-gray-pink); overflow-y: auto; }
+    }
+
+    .player-modal.active .player-container { transform: scale(1) translateY(0); }
+    .player-close { position: absolute; top: 1rem; right: 1rem; width: 40px; height: 40px; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; z-index: 12; transition: background var(--transition-fast), opacity 0.3s ease, pointer-events 0.3s ease; }
+    .player-close:hover { background: var(--warm-heart-red); }
+    
+    .player-header { position: absolute; top: 0; left: 0; width: 100%; z-index: 10; background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%); color: white; border-bottom: none; padding: 1.5rem; transition: opacity 0.3s ease, pointer-events 0.3s ease; }
+    .player-title { font-size: 1.5rem; margin-bottom: 0.2rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .player-meta { color: var(--sakura-pink); font-size: 0.9rem; text-shadow: 0 1px 2px rgba(0,0,0,0.5); font-weight: 500; }
+    
+    .video-wrapper { position: relative; width: 100%; height: 100%; background: #000; overflow: hidden; }
+    #player-video {
+      display: none;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    #player-main-area:fullscreen { background: #000 !important; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    #player-main-area:fullscreen .video-wrapper { width: 100%; height: 100%; max-height: 100vh; aspect-ratio: auto; }
+
+    .video-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #2E2A2B, #6E6A6C); display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
+    .video-play-icon { width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; backdrop-filter: blur(4px); cursor: pointer; transition: var(--transition-bounce); }
+    .video-play-icon:hover { background: var(--sakura-pink); transform: scale(1.1); }
+    .video-play-icon svg { width: 40px; height: 40px; margin-left: 5px; }
+    
+    .player-controls { position: absolute; bottom: 0; left: 0; width: 100%; z-index: 10; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); color: white; padding: 1.5rem; transition: opacity 0.3s ease, pointer-events 0.3s ease; }
+    .progress-bar-wrapper { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .progress-bar { flex: 1; height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; position: relative; cursor: pointer; }
+    .progress-fill { height: 100%; background: var(--sakura-pink); border-radius: 3px; }
+    .progress-thumb { position: absolute; top: 50%; width: 14px; height: 14px; background: var(--warm-heart-red); border-radius: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.2s; }
+    .progress-bar:hover .progress-thumb { opacity: 1; }
+    .progress-bar:active .progress-thumb { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    .time-current, .time-total { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-variant-numeric: tabular-nums; }
+    
+    .local-cors-warning {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(46, 42, 43, 0.95);
+      backdrop-filter: blur(12px);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      padding: 2rem;
+      text-align: center;
+    }
+    .warning-card {
+      max-width: 500px;
+      background: white;
+      color: var(--text-main);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-hover);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .warning-icon { font-size: 3.5rem; animation: bounce 2s infinite; }
+    .warning-title { font-size: 1.5rem; font-weight: 700; color: var(--warm-heart-red); }
+    .warning-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+    .warning-steps {
+      text-align: left;
+      font-size: 0.85rem;
+      background: var(--light-gray-pink);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    .warning-steps li { margin-bottom: 0.5rem; list-style-type: decimal; margin-left: 1.2rem; }
+
+    .controls-row { display: flex; align-items: center; gap: 1.5rem; }
+    .ctrl-btn { color: white; font-size: 1.2rem; transition: var(--transition-fast); }
+    .ctrl-btn:hover { color: var(--sakura-pink); }
+    .ctrl-btn svg { width: 24px; height: 24px; }
+    .volume-ctrl { display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.8); }
+    .volume-range { width: 80px; accent-color: var(--sakura-pink); }
+    .quality-badge { margin-left: auto; font-size: 0.8rem; font-weight: 600; padding: 0.2rem 0.5rem; border: 1px solid rgba(255,255,255,0.5); border-radius: var(--radius-sm); color: rgba(255,255,255,0.8); }
+    .fullscreen-btn { font-size: 1.5rem; }
+
+    .auto-resume-overlay, .auto-next-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 9; display: flex; align-items: center; justify-content: center; color: white; transition: opacity 0.3s ease; }
+    .auto-resume-box, .auto-next-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; animation: fadeInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .auto-resume-box h3, .auto-next-box h3 { font-size: 1.8rem; color: white; font-weight: 700; }
+    .auto-resume-box p, .auto-next-box p { color: var(--sakura-pink); font-size: 1.2rem; font-weight: 600; max-width: 350px; }
+    
+    .episodes-panel { padding: 1.5rem; background: var(--milky-white); flex: 1; min-height: 250px; }
+    .episodes-title { margin-bottom: 1rem; font-size: 1.1rem; }
+    .episodes-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .ep-btn { width: 100%; text-align: left; padding: 0.8rem 1rem; background: white; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); font-size: 0.9rem; transition: var(--transition-fast); }
+    .ep-btn:hover { border-color: var(--sakura-pink); }
+    .ep-btn.active { background: var(--sakura-pink); color: white; border-color: var(--sakura-pink); }
+    .next-episode-banner { background: linear-gradient(to right, var(--sakura-pink), var(--lavender-soft)); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; color: white; }
+    .next-episode-banner p { font-size: 0.85rem; opacity: 0.9; margin-bottom: 0.2rem; }
+    .next-episode-banner span { font-weight: 600; font-size: 1.1rem; }
+
+    /* ─── DOUBLE CLICK & AUTO-NEXT STYLES ─── */
+    .double-click-zone { position: absolute; top: 0; height: 85%; z-index: 5; background: transparent; cursor: pointer; }
+    .zone-left { left: 0; width: 30%; }
+    .zone-center { left: 30%; width: 40%; }
+    .zone-right { right: 0; width: 30%; }
+
+    .double-click-ripple { position: absolute; top: 50%; transform: translateY(-50%) scale(0.8); z-index: 5; background: rgba(0, 0, 0, 0.6); border-radius: 50%; width: 80px; height: 80px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .left-ripple { left: 15%; }
+    .right-ripple { right: 15%; }
+    .double-click-ripple.animate { opacity: 1; transform: translateY(-50%) scale(1.1); }
+    .ripple-icon svg { width: 24px; height: 24px; margin-bottom: 2px; }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .countdown-circle { position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+    .progress-ring { position: absolute; transform: rotate(-90deg); }
+    .progress-ring__circle { transition: stroke-dashoffset 1s linear; transform-origin: 50% 50%; }
+    .countdown-number { font-size: 1.8rem; font-weight: 700; color: white; }
+    .auto-next-buttons { display: flex; gap: 1rem; }
+    .auto-next-btn { padding: 0.8rem 1.5rem; border-radius: var(--radius-round); font-size: 0.95rem; font-weight: 600; transition: var(--transition-bounce); }
+    .btn-cancel { background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .btn-cancel:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-2px); }
+    .btn-play-now { background: var(--warm-heart-red); color: white; box-shadow: 0 4px 12px rgba(232, 106, 122, 0.3); }
+    .btn-play-now:hover { background: #d85a6a; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(232, 106, 122, 0.5); }
+
+    /* ─── MODALS & UTILS ─── */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: rgba(250, 250, 251, 0.8); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-card { position: relative; background: white; width: 90%; max-width: 400px; padding: 2.5rem; border-radius: var(--radius-lg); box-shadow: var(--shadow-hover); transform: translateY(20px); transition: var(--transition-bounce); text-align: center; }
+    .modal-overlay.active .modal-card { transform: translateY(0); }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: var(--text-light); transition: var(--transition-fast); }
+    .modal-close:hover { color: var(--warm-heart-red); }
+    .modal-logo { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-weight: 700; font-size: 1.2rem; margin-bottom: 1.5rem; }
+    .modal-title { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .modal-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; }
+    .form-group { text-align: left; margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-main); }
+    .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); font-family: inherit; font-size: 1rem; transition: var(--transition-fast); background: var(--milky-white); }
+    .form-group input:focus { outline: none; border-color: var(--sakura-pink); background: white; box-shadow: 0 0 0 3px rgba(246, 183, 193, 0.2); }
+    .full-width { width: 100%; }
+    .modal-switch { margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted); }
+    .modal-switch a { color: var(--sakura-pink); font-weight: 600; }
+    .or-divider { display: flex; align-items: center; margin: 1.5rem 0; color: var(--text-light); font-size: 0.85rem; }
+    .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: var(--light-gray-pink); }
+    .or-divider span { padding: 0 1rem; }
+    .google-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.8rem; padding: 0.8rem; background: white; border: 1px solid #ddd; border-radius: var(--radius-sm); font-weight: 500; color: var(--text-main); transition: var(--transition-fast); }
+    .google-btn:hover { background: var(--milky-white); }
+
+    kbd { background-color: var(--light-gray-pink); border-radius: 4px; border: 1px solid var(--text-light); box-shadow: 0 1px 1px rgba(0,0,0,0.2); color: var(--text-main); display: inline-block; font-family: monospace; font-size: 0.85em; font-weight: 700; line-height: 1; padding: 2px 4px; white-space: nowrap; }
+
+    .toast-container { position: fixed; bottom: 2rem; right: 2rem; z-index: 3000; display: flex; flex-direction: column; gap: 1rem; }
+    .toast { background: white; color: var(--text-main); padding: 1rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-hover); display: flex; align-items: center; gap: 1rem; transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); border-left: 4px solid var(--sakura-pink); }
+    .toast.show { transform: translateX(0); }
+    .toast-icon { font-size: 1.2rem; }
+
+    .no-animes-box { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: white; border: 2px dashed var(--sakura-pink); border-radius: var(--radius-lg); margin: 2rem 0; }
+    .no-animes-box h3 { margin-bottom: 0.5rem; color: var(--warm-heart-red); }
+    .no-animes-box p { color: var(--text-muted); font-size: 0.95rem; }
+
+    .footer { background: white; padding: 4rem 0 2rem; border-top: 1px solid var(--light-gray-pink); }
+    .footer-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; margin-bottom: 3rem; }
+    .footer-brand { display: flex; gap: 1rem; max-width: 300px; }
+    .footer-logo-text { font-weight: 800; letter-spacing: 1px; margin-bottom: 0.5rem; }
+    .footer-tagline { color: var(--text-muted); font-size: 0.9rem; }
+    .footer-links { display: flex; gap: 4rem; flex-wrap: wrap; }
+    .footer-col h4 { margin-bottom: 1rem; font-size: 1rem; }
+    .footer-col a { display: block; color: var(--text-muted); margin-bottom: 0.5rem; font-size: 0.9rem; transition: var(--transition-fast); }
+    .footer-col a:hover { color: var(--sakura-pink); transform: translateX(2px); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 2rem; border-top: 1px solid var(--light-gray-pink); color: var(--text-light); font-size: 0.85rem; }
+    .footer-socials { display: flex; gap: 1rem; font-size: 1.2rem; }
+    .footer-socials a:hover { color: var(--sakura-pink); }
+
+    @media (max-width: 1024px) { .hero { flex-direction: column; padding-top: 120px; text-align: center; } .hero-content { padding-left: 0; display: flex; flex-direction: column; align-items: center; margin-bottom: 3rem; } .hero-title { font-size: 3.5rem; } }
+    @media (max-width: 768px) { .nav-links, .nav-actions { display: none; } .hamburger { display: flex; } .hero-title { font-size: 2.5rem; } .hero-stats { gap: 1rem; } .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; } .footer-top { flex-direction: column; } }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#" class="logo" id="logo-link">
+        <span class="logo-kanji">心</span>
+        <span class="logo-text">KOKORO</span>
+        <span class="logo-sub">ANIME</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#" class="nav-link active" id="nav-home">Ana Sayfa</a></li>
+        <li><a href="#anime-section" class="nav-link" id="nav-anime">Animeler</a></li>
+        <li><a href="#popular-section" class="nav-link" id="nav-popular">Popüler</a></li>
+        <li><a href="#list-section" class="nav-link" id="nav-list">Listem</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="search-btn" id="search-toggle-btn" aria-label="Ara">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <div id="auth-nav-container" style="display: flex; align-items: center; gap: 1rem;">
+          <button class="login-btn" id="login-btn">Giriş Yap</button>
+        </div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ─── SEARCH OVERLAY ─── -->
+  <div class="search-overlay" id="search-overlay">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" placeholder="Anime ara… (örn: Naruto, Attack on Titan)" autocomplete="off" />
+      <button id="search-close" aria-label="Kapat">✕</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <div class="sakura-container" id="sakura-container"></div>
+      <div class="hero-gradient"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">🌸 Yeni Sezon Başladı</div>
+      <h1 class="hero-title">Ruhunu Dinlendiren<br/><em>Anime Dünyası</em></h1>
+      <p class="hero-desc">Pastel bir atmosferde, kalbini dokunduran animeleri keşfet.<br/>Stressiz, temiz ve tamamen senin için.</p>
+      <div class="hero-buttons">
+        <button class="btn-primary" id="hero-start-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          İzlemeye Başla
+        </button>
+        <button class="btn-secondary" id="hero-explore-btn">Keşfet</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" id="stat-anime-count">0+</span><span class="stat-label">Anime</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">150K+</span><span class="stat-label">İzleyici</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">HD</span><span class="stat-label">Kalite</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="featured-card" id="featured-card">
+        <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=560&fit=crop&crop=center" alt="Öne Çıkan Anime" class="featured-img" id="featured-img" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22560%22 viewBox=%220 0 400 560%22><rect width=%22400%22 height=%22560%22 fill=%22%23F3F0F2%22/><text x=%2250%25%22 y=%2250%25%22 font-family=%22sans-serif%22 font-size=%2220%22 fill=%22%23A8A4A6%22 text-anchor=%22middle%22>Resim%20Bulunamadı</text></svg>'"/>
+        <div class="featured-overlay">
+          <div class="featured-badge">⭐ 9.2</div>
+          <div class="featured-info">
+            <h3 id="featured-title">Kimi no Na wa</h3>
+            <p id="featured-genre">Romantik</p>
+          </div>
+          <button class="featured-play" id="featured-play-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── GENRE FILTER ─── -->
+  <section class="genre-section" id="genre-section">
+    <div class="container">
+      <div class="genre-chips">
+        <button class="genre-chip active" data-genre="all" id="genre-all">Tümü</button>
+        <button class="genre-chip" data-genre="romantik" id="genre-romantik">💕 Romantik</button>
+        <button class="genre-chip" data-genre="aksiyon" id="genre-aksiyon">⚡ Aksiyon</button>
+        <button class="genre-chip" data-genre="slice-of-life" id="genre-sol">🌿 Slice of Life</button>
+        <button class="genre-chip" data-genre="drama" id="genre-drama">🎭 Drama</button>
+        <button class="genre-chip" data-genre="fantezi" id="genre-fantezi">✨ Fantezi</button>
+        <button class="genre-chip" data-genre="komedi" id="genre-komedi">😄 Komedi</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTINUE WATCHING SECTION ─── -->
+  <section class="anime-section" id="continue-section" style="padding-bottom: 0; display: none;">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-icon">▶️</span>
+          <h2 class="section-title">İzlemeye Devam Et</h2>
+        </div>
+      </div>
+      <div class="carousel-wrapper">
+        <button class="carousel-btn carousel-prev" id="continue-prev" aria-label="Geri">‹</button>
+        <div class="anime-row" id="continue-row"></div>
+        <button class="carousel-btn carousel-next" id="continue-next" aria-label="İleri">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── POPULAR ANIME SECTION ─── -->
+  <section class="anime-section" id="popular-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-icon">🔥</span>
+          <h2 class="section-title">Popüler Animeler</h2>
+        </div>
+        <a href="#" class="see-all" id="see-all-popular">Tümünü Gör →</a>
+      </div>
+      <div class="carousel-wrapper">
+        <button class="carousel-btn carousel-prev" id="popular-prev" aria-label="Geri">‹</button>
+        <div class="anime-row" id="popular-row"></div>
+        <button class="carousel-btn carousel-next" id="popular-next" aria-label="İleri">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NEW ANIME SECTION ─── -->
+  <section class="anime-section lavender-bg" id="anime-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-icon">✨</span>
+          <h2 class="section-title">Yeni Eklenenler</h2>
+        </div>
+        <a href="#" class="see-all" id="see-all-new">Tümünü Gör →</a>
+      </div>
+      <div class="carousel-wrapper">
+        <button class="carousel-btn carousel-prev" id="new-prev" aria-label="Geri">‹</button>
+        <div class="anime-row" id="new-row"></div>
+        <button class="carousel-btn carousel-next" id="new-next" aria-label="İleri">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── RECOMMENDED SECTION ─── -->
+  <section class="anime-section" id="recommended-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-icon">💌</span>
+          <h2 class="section-title">Senin İçin Önerilenler</h2>
+        </div>
+        <a href="#" class="see-all" id="see-all-rec">Tümünü Gör →</a>
+      </div>
+      <div class="carousel-wrapper">
+        <button class="carousel-btn carousel-prev" id="rec-prev" aria-label="Geri">‹</button>
+        <div class="anime-row" id="rec-row"></div>
+        <button class="carousel-btn carousel-next" id="rec-next" aria-label="İleri">›</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── MY LIST SECTION ─── -->
+  <section class="list-section" id="list-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-title-group">
+          <span class="section-icon">📚</span>
+          <h2 class="section-title">Listem</h2>
+        </div>
+      </div>
+      <div class="list-tabs">
+        <button class="list-tab active" data-tab="watchlist" id="tab-watchlist">İzlenecekler</button>
+        <button class="list-tab" data-tab="completed" id="tab-completed">Bitirdiklerim</button>
+        <button class="list-tab" data-tab="favorites" id="tab-favorites">Favoriler ❤️</button>
+        <button class="list-tab" data-tab="history" id="tab-history">Geçmiş 📜</button>
+      </div>
+      <div class="list-grid" id="list-grid">
+        <div class="list-grid-empty" id="list-empty">
+          <div class="empty-icon">🌸</div>
+          <p>Henüz listeniz boş.<br/>Oynatıcıyı açıp listelerinizi düzenleyebilirsiniz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── VIDEO PLAYER MODAL ─── -->
+  <div class="player-modal" id="player-modal">
+    <div class="player-backdrop" id="player-backdrop"></div>
+    <div class="player-container layout-split">
+      <button class="player-close" id="player-close" aria-label="Kapat">✕</button>
+      <div class="player-main" id="player-main-area">
+        
+        <div class="video-wrapper">
+          <video id="player-video" class="player-video" preload="metadata" playsinline crossorigin="anonymous"></video>
+          
+          <div class="player-header" id="player-header">
+            <div class="player-info">
+              <h2 class="player-title" id="player-title">Anime Adı</h2>
+              <p class="player-meta" id="player-meta">Bölüm 1 · HD</p>
+            </div>
+          </div>
+
+          <!-- Invisible Click Detection Zones (Fixed Layout) -->
+          <div class="double-click-zone zone-left" id="zone-left"></div>
+          <div class="double-click-zone zone-center" id="zone-center"></div>
+          <div class="double-click-zone zone-right" id="zone-right"></div>
+
+          <!-- YouTube Style Double Click Rewind/Forward Indicators -->
+          <div class="double-click-ripple left-ripple" id="ripple-left">
+            <div class="ripple-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
+            </div>
+            <span>-10sn</span>
+          </div>
+          <div class="double-click-ripple right-ripple" id="ripple-right">
+            <div class="ripple-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
+            </div>
+            <span>+10sn</span>
+          </div>
+
+          <!-- Auto Next Episode Overlay -->
+          <div class="auto-next-overlay" id="auto-next-overlay" style="display: none;">
+            <div class="auto-next-box">
+              <h3>Sıradaki Bölüm Başlıyor</h3>
+              <p id="auto-next-ep-name">Sezon 1 · Bölüm 2</p>
+              <div class="countdown-circle">
+                <svg class="progress-ring" width="80" height="80">
+                  <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.2)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+                  <circle class="progress-ring__circle" stroke="var(--sakura-pink)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40" id="countdown-ring"/>
+                </svg>
+                <span class="countdown-number" id="countdown-number">5</span>
+              </div>
+              <div class="auto-next-buttons">
+                <button class="auto-next-btn btn-cancel" id="auto-next-cancel">İptal Et</button>
+                <button class="auto-next-btn btn-play-now" id="auto-next-play-now">Hemen Oyna</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto Resume Progress Overlay -->
+          <div class="auto-resume-overlay" id="auto-resume-overlay" style="display: none;">
+            <div class="auto-resume-box">
+              <h3>⏱️ Kaldığın Yerden Devam Et</h3>
+              <p id="auto-resume-text">Sezon 1 · Bölüm 1 - 00:00 saniyesinde kalmıştın.</p>
+              <div class="auto-next-buttons" style="margin-top: 1rem;">
+                <button class="auto-next-btn btn-cancel" id="btn-resume-cancel">Yeniden Başlat</button>
+                <button class="auto-next-btn btn-play-now" id="btn-resume-confirm">Devam Et 🌸</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Local CORS Warning Card if using file:// protocol -->
+          <div class="local-cors-warning" id="local-cors-warning" style="display: none;">
+            <div class="warning-card">
+              <div class="warning-icon">⚠️</div>
+              <h3 class="warning-title">Yerel Sunucu Gerekli</h3>
+              <p class="warning-desc">
+                HTML dosyasını doğrudan çift tıklayarak çalıştırıyorsunuz. Tarayıcıların güvenlik politikaları (CORS) nedeniyle yerel sunucu olmadan <strong>.m3u8</strong> uzantılı HLS videoları oynatılamaz.
+              </p>
+              <ul class="warning-steps">
+                <li><strong>VS Code kullanıyorsanız:</strong> "Live Server" eklentisini kurun ve sağ alttaki "Go Live" butonuna basın.</li>
+                <li><strong>Python kullanıyorsanız:</strong> Klasörde terminali açıp <code>python -m http.server 8000</code> yazın ve tarayıcıdan <code>http://localhost:8000</code> adresine gidin.</li>
+                <li><strong>Diğer:</strong> Klasörü herhangi bir yerel sunucu (Wamp, Xampp, npx serve vb.) üzerinden çalıştırın.</li>
+              </ul>
+              <button class="auto-next-btn btn-play-now" style="width: 100%; padding: 0.8rem;" onclick="document.getElementById('local-cors-warning').style.display='none'">Yine de Kapat ve Dene 🌸</button>
+            </div>
+          </div>
+
+          <div class="video-placeholder" id="video-placeholder">
+            <div class="video-overlay-text">
+              <div class="video-play-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <h3 id="video-anime-title">Kimi no Na wa</h3>
+              <p>Sağ taraftan bir sezon ve bölüm seçin.</p>
+            </div>
+          </div>
+
+          <!-- Absolute Overlay Controls -->
+          <div class="player-controls" id="player-controls">
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar" id="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+                <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>
+              </div>
+              <span class="time-current" id="time-current">00:00</span>
+              <span class="time-total" id="time-total">00:00</span>
+            </div>
+            
+            <div class="controls-row">
+              <button class="ctrl-btn" id="ctrl-prev-ep" aria-label="Önceki Bölüm">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+              </button>
+              <button class="ctrl-btn" id="ctrl-rewind" aria-label="10 Saniye Geri">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
+              </button>
+              <button class="ctrl-btn" id="ctrl-play" aria-label="Oynat/Durdur">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+              <button class="ctrl-btn" id="ctrl-forward" aria-label="10 Saniye İleri">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
+              </button>
+              <button class="ctrl-btn" id="ctrl-next-ep" aria-label="Sonraki Bölüm">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+              </button>
+              <div class="volume-ctrl">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                <input type="range" id="volume-range" min="0" max="100" value="80" class="volume-range" />
+              </div>
+              
+              <span class="quality-badge">HD</span>
+
+              <div class="speed-ctrl" style="display: flex; align-items: center;">
+                <select id="ctrl-speed" style="background: white; color: var(--text-main); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); font-weight: 600; padding: 0.2rem 0.5rem; outline: none; cursor: pointer; font-size: 0.8rem; font-family: inherit; transition: var(--transition-fast);" aria-label="Oynatma Hızı">
+                  <option value="0.5">0.5x</option>
+                  <option value="1" selected>1.0x</option>
+                  <option value="1.25">1.25x</option>
+                  <option value="1.5">1.5x</option>
+                  <option value="2">2.0x</option>
+                </select>
+              </div>
+
+              <button class="ctrl-btn" id="ctrl-shortcuts" aria-label="Klavye Kısayolları" title="Klavye Kısayolları">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+                  <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
+                  <line x1="6" y1="8" x2="6" y2="8"/>
+                  <line x1="10" y1="8" x2="10" y2="8"/>
+                  <line x1="14" y1="8" x2="14" y2="8"/>
+                  <line x1="18" y1="8" x2="18" y2="8"/>
+                  <line x1="6" y1="12" x2="6" y2="12"/>
+                  <line x1="10" y1="12" x2="18" y2="12"/>
+                  <line x1="6" y1="16" x2="18" y2="16"/>
+                </svg>
+              </button>
+
+              <button class="ctrl-btn fullscreen-btn" id="ctrl-fullscreen" aria-label="Tam Ekran">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="player-sidebar">
+        <!-- Birlikte İzle Paneli -->
+        <div class="watch-party-panel" style="padding: 1.25rem; border-bottom: 1px solid var(--light-gray-pink); background: var(--cream-white);">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; color: var(--warm-heart-red);">
+            <span>🌸</span> Birlikte İzle (Watch Party)
+          </h4>
+          
+          <div id="wp-setup-container" style="display: flex; flex-direction: column; gap: 0.6rem;">
+            <button id="wp-create-btn" class="login-btn" style="width: 100%; padding: 0.5rem; font-size: 0.85rem; box-shadow: none; border-radius: var(--radius-sm);">Oda Oluştur ✨</button>
+            <div style="display: flex; gap: 0.4rem; align-items: center;">
+              <input type="text" id="wp-join-input" placeholder="Oda Kodunu Yapıştır" style="flex: 1; padding: 0.4rem 0.6rem; font-size: 0.8rem; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); outline: none;" />
+              <button id="wp-join-btn" class="ep-btn" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600; margin: 0; background: white; border-radius: var(--radius-sm);">Katıl</button>
+            </div>
+          </div>
+
+          <div id="wp-active-container" style="display: none; flex-direction: column; gap: 0.6rem;">
+            <div style="background: white; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px dashed var(--sakura-pink); font-size: 0.8rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+                <span style="font-weight: 600; color: var(--text-muted);">Oda Kodu:</span>
+                <button id="wp-copy-code" style="color: var(--warm-heart-red); font-weight: 600; cursor: pointer; font-size: 0.75rem;">Kopyala 📋</button>
+              </div>
+              <div id="wp-room-id-display" style="word-break: break-all; font-family: monospace; background: var(--light-gray-pink); padding: 0.25rem; border-radius: 4px; font-size: 0.7rem; color: var(--text-main);"></div>
+            </div>
+            
+            <div style="font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
+              <span>Rolünüz: <strong id="wp-role-display" style="color: var(--warm-heart-red);">İzleyici</strong></span>
+              <span id="wp-status-dot" style="display: inline-flex; align-items: center; gap: 0.25rem;"><span style="width: 8px; height: 8px; background: #34A853; border-radius: 50%;"></span> Bağlı</span>
+            </div>
+
+            <div style="max-height: 85px; overflow-y: auto; background: white; padding: 0.4rem; border-radius: var(--radius-sm); border: 1px solid var(--light-gray-pink);">
+              <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem;">Üyeler:</div>
+              <div id="wp-members-list" style="display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.7rem;"></div>
+            </div>
+
+            <button id="wp-leave-btn" class="ep-btn" style="width: 100%; padding: 0.4rem; font-size: 0.8rem; color: var(--warm-heart-red); border-color: var(--warm-heart-red); font-weight: 600; text-align: center; margin: 0; background: white; border-radius: var(--radius-sm);">Odadan Ayrıl 🚪</button>
+          </div>
+        </div>
+
+        <div class="episodes-panel">
+          <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+            <h4 class="episodes-title" id="sidebar-title" style="margin: 0;">Sezonlar</h4>
+            <button id="back-to-seasons" style="display: none; background: none; border: none; color: var(--sakura-pink); font-weight: 600; cursor: pointer;">← Geri</button>
+          </div>
+          <div class="seasons-list" id="seasons-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+          <div class="episodes-list" id="episodes-list" style="display: none;"></div>
+        </div>
+        
+        <div style="padding: 1rem; border-top: 1px solid var(--light-gray-pink); display: flex; flex-direction: column; gap: 0.5rem;">
+          <button id="player-btn-watchlist" class="ep-btn" style="font-size: 0.85rem; font-weight: 600; text-align: center;">Listeye Ekle (İzlenecek) 📌</button>
+          <button id="player-btn-completed" class="ep-btn" style="font-size: 0.85rem; font-weight: 600; text-align: center;">Bitirdiklerime Ekle ✔️</button>
+          <button id="player-btn-favorites" class="ep-btn" style="font-size: 0.85rem; font-weight: 600; text-align: center;">Favorilere Ekle ❤️</button>
+        </div>
+
+        <div class="next-episode-banner" id="next-ep-banner" style="display: none;">
+          <p>Sıradaki Bölüm</p>
+          <span id="next-ep-title">Bölüm 2</span>
+          <button id="next-ep-btn" class="btn-primary" style="padding: 0.5rem 1rem; font-size:0.9rem">Hemen İzle</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SHORTCUTS DIALOG ─── -->
+  <div class="modal-overlay" id="shortcuts-modal" style="z-index: 2500;">
+    <div class="modal-card" style="max-width: 450px; padding: 2.5rem; text-align: left;">
+      <button class="modal-close" id="shortcuts-close" aria-label="Kapat">✕</button>
+      <div class="modal-logo" style="justify-content: flex-start; gap: 0.5rem; margin-bottom: 1rem;">
+        <span class="logo-kanji small">⌨️</span>
+        <span style="font-weight: 700; font-size: 1.25rem;">Klavye Kısayolları</span>
+      </div>
+      <p class="modal-sub" style="margin-bottom: 1.5rem; text-align: left;">Oynatıcıyı farenize dokunmadan kontrol etmek için bu kısayolları kullanabilirsiniz:</p>
+      <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-gray-pink); padding-bottom: 0.5rem;">
+          <span style="font-weight: 500; color: var(--text-main);">Oynat / Duraklat</span><kbd>Boşluk (Space)</kbd>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-gray-pink); padding-bottom: 0.5rem;">
+          <span style="font-weight: 500; color: var(--text-main);">10 Saniye İleri Sar</span><kbd>Sağ Ok (→)</kbd>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-gray-pink); padding-bottom: 0.5rem;">
+          <span style="font-weight: 500; color: var(--text-main);">10 Saniye Geri Sar</span><kbd>Sol Ok (←)</kbd>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-gray-pink); padding-bottom: 0.5rem;">
+          <span style="font-weight: 500; color: var(--text-main);">Sesi Kapat / Aç</span><kbd>M Tuşu</kbd>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--light-gray-pink); padding-bottom: 0.5rem;">
+          <span style="font-weight: 500; color: var(--text-main);">Tam Ekran Modu</span><kbd>F Tuşu</kbd>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.5rem;">
+          <span style="font-weight: 500; color: var(--text-main);">Ses Artır / Azalt</span><kbd>Yukarı / Aşağı Okları</kbd>
+        </div>
+      </div>
+      <button class="btn-primary full-width" id="btn-shortcuts-ok" style="text-align: center; justify-content: center;">Anladım 🌸</button>
+    </div>
+  </div>
+
+  <!-- ─── LOGIN MODAL ─── -->
+  <div class="modal-overlay" id="login-modal">
+    <div class="modal-card" id="login-card">
+      <button class="modal-close" id="login-close" aria-label="Kapat">✕</button>
+      <div class="modal-logo"><span class="logo-kanji small">心</span><span>Kokoro Anime</span></div>
+      <h2 class="modal-title">Hoş Geldin 🌸</h2>
+      <p class="modal-sub">İzleme geçmişin ve listelerini kaydet</p>
+      <form class="login-form" id="login-form">
+        <div class="form-group"><label for="email-input">E-posta</label><input type="email" id="email-input" placeholder="ornek@email.com" autocomplete="email" required /></div>
+        <div class="form-group"><label for="password-input">Şifre</label><input type="password" id="password-input" placeholder="••••••••" autocomplete="current-password" required /></div>
+        <button type="submit" class="btn-primary full-width" id="login-submit-btn">Giriş Yap</button>
+      </form>
+      <p class="modal-switch">Hesabın yok mu? <a href="#" id="switch-to-register">Kayıt Ol</a></p>
+      <div class="or-divider"><span>veya</span></div>
+      <button class="google-btn" id="google-login-btn">
+        <svg viewBox="0 0 24 24" width="20"><path fill="#EA4335" d="M5.26 9.77A7.49 7.49 0 0 1 12 4.5c1.8 0 3.43.64 4.7 1.69l3.5-3.5A12 12 0 0 0 12 0C7.31 0 3.25 2.7 1.28 6.65l3.98 3.12z"/><path fill="#34A853" d="M16.04 18.01A7.47 7.47 0 0 1 12 19.5a7.49 7.49 0 0 1-6.72-4.24l-3.98 3.10z"/><path fill="#4A90D9" d="M20.42 20.88A11.96 11.96 0 0 0 24 12c0-.77-.07-1.52-.2-2.25H12v4.5h6.88a5.86 5.86 0 0 1-2.46 3.76l4 2.87z"/><path fill="#FBBC05" d="M5.28 14.26A7.47 7.47 0 0 1 4.5 12c0-.8.14-1.58.38-2.31L.9 6.57A11.96 11.96 0 0 0 0 12c0 1.93.46 3.76 1.28 5.38l3.98-3.12z"/></svg>
+        Google ile Devam Et
+      </button>
+    </div>
+  </div>
+
+  <!-- ─── ACCOUNT SETTINGS MODAL ─── -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-card">
+      <button class="modal-close" id="settings-close" aria-label="Kapat">✕</button>
+      <div class="modal-logo"><span class="logo-kanji small">⚙️</span><span>Hesap Ayarları</span></div>
+      <h2 class="modal-title">Profilini Düzenle 🌸</h2>
+      <p class="modal-sub">Hesap bilgilerinizi buradan güncelleyebilirsiniz.</p>
+      <form id="settings-form">
+        <div class="form-group"><label for="settings-username">Kullanıcı Adı</label><input type="text" id="settings-username" placeholder="Yeni kullanıcı adınız" required /></div>
+        <div class="form-group"><label for="settings-password">Yeni Şifre</label><input type="password" id="settings-password" placeholder="Değiştirmek istemiyorsanız boş bırakın" /></div>
+        <button type="submit" class="btn-primary full-width" style="margin-bottom: 1.5rem;">Değişiklikleri Kaydet</button>
+      </form>
+      <div class="or-divider"><span>Hesap İstatistikleri</span></div>
+      <div style="display: flex; justify-content: space-around; margin-bottom: 1.5rem; background: var(--milky-white); padding: 1rem; border-radius: var(--radius-md);">
+        <div><div style="font-size: 1.25rem; font-weight: 700; color: var(--warm-heart-red);" id="stats-watchlist-count">0</div><div style="font-size: 0.8rem; color: var(--text-muted);">İzlenecek</div></div>
+        <div><div style="font-size: 1.25rem; font-weight: 700; color: var(--sakura-pink);" id="stats-completed-count">0</div><div style="font-size: 0.8rem; color: var(--text-muted);">Tamamlanan</div></div>
+        <div><div style="font-size: 1.25rem; font-weight: 700; color: var(--lavender-soft);" id="stats-favorites-count">0</div><div style="font-size: 0.8rem; color: var(--text-muted);">Favori</div></div>
+      </div>
+      <button class="btn-secondary full-width" id="settings-logout-btn" style="color: var(--warm-heart-red); border-color: var(--warm-heart-red);">Oturumu Kapat 🚪</button>
+    </div>
+  </div>
+
+  <!-- ─── TOAST ─── -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <span class="logo-kanji small">心</span>
+          <div><div class="footer-logo-text">KOKORO ANIME</div><p class="footer-tagline">Ruhunu dinlendiren anime dünyası</p></div>
+        </div>
+        <div class="footer-links">
+          <div class="footer-col"><h4>Keşfet</h4><a href="#">Popüler</a><a href="#">Yeni Sezon</a><a href="#">Klasikler</a></div>
+          <div class="footer-col"><h4>Türler</h4><a href="#">Romantik</a><a href="#">Aksiyon</a><a href="#">Slice of Life</a></div>
+          <div class="footer-col"><h4>Hesap</h4><a href="#">Giriş Yap</a><a href="#">Kayıt Ol</a><a href="#">Listem</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Kokoro Anime · Tüm hakları saklıdır 🌸</p>
+        <div class="footer-socials"><a href="#" aria-label="Twitter">𝕏</a><a href="#" aria-label="Instagram">📷</a><a href="#" aria-label="Discord">💬</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Firebase JavaScript SDK Modular Entegrasyonu -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, updatePassword, signOut, onAuthStateChanged, signInAnonymously, GoogleAuthProvider, signInWithPopup, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc, onSnapshot, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBZRjGDZuEcpQoPuN0_bWzVqS34hoGgDWg",
+      authDomain: "animevideos-86250.firebaseapp.com",
+      projectId: "animevideos-86250",
+      storageBucket: "animevideos-86250.firebasestorage.app",
+      messagingSenderId: "748237329914",
+      appId: "1:748237329914:web:340e19757ed7bdd6aa4043",
+      measurementId: "G-29GPN7ZWWX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'animevideos-86250';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      let userLists = { watchlist: [], completed: [], favorites: [] };
+      let userHistory = [];
+      let isWatchPartyActive = false, isRoomHost = false, activeRoomId = null, roomUnsubscribe = null, syncBlockActive = false;
+
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+
+      const sakuraContainer = document.getElementById('sakura-container');
+      if (sakuraContainer) {
+        const createPetal = () => {
+          const petal = document.createElement('div');
+          petal.classList.add('sakura-petal');
+          const startLeft = Math.random() * 100, size = Math.random() * 10 + 5, duration = Math.random() * 5 + 5, delay = Math.random() * 5;
+          petal.style.left = `${startLeft}vw`; petal.style.width = `${size}px`; petal.style.height = `${size}px`;
+          petal.style.animationDuration = `${duration}s`; petal.style.animationDelay = `${delay}s`;
+          sakuraContainer.appendChild(petal);
+          setTimeout(() => petal.remove(), (duration + delay) * 1000);
+        };
+        for (let i = 0; i < 20; i++) createPetal();
+        setInterval(createPetal, 400);
+      }
+
+      const activeKeys = {};
+      document.addEventListener('keydown', (e) => {
+        activeKeys[e.key] = true;
+        if ((activeKeys['Control'] || activeKeys['ctrlKey']) && (activeKeys['Alt'] || activeKeys['altKey']) && (activeKeys['Shift'] || activeKeys['shiftKey']) && activeKeys['F12'] && activeKeys['F11']) {
+          e.preventDefault();
+          document.body.innerHTML = `<div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#FFF6F7; color:#E86A7A; font-family:'Outfit',sans-serif; text-align:center; gap: 1rem;"><span style="font-size: 5rem;">🌸</span><h1 style="font-size: 2.5rem;">Kokoro Anime Kapatıldı</h1><p style="color: #6E6A6C; font-size: 1.2rem;">Görüşmek üzere, kendine iyi bak dostum! ✨</p></div>`;
+        }
+      });
+      document.addEventListener('keyup', (e) => delete activeKeys[e.key]);
+
+      // ─── LOCAL / CORS GÜVENLİK KONTROLÜ ───
+      // file:// protokolü ile açıldığında otomatik uyarı tetiklenir
+      if (window.location.protocol === 'file:') {
+        document.getElementById('local-cors-warning').style.display = 'flex';
+        setTimeout(() => {
+          showToast("UYARI: Video dosyaları 'file://' protokolünde oynatılamaz. Lütfen Live Server veya yerel bir sunucu kullanın! ⚠️", "⚠️");
+        }, 1500);
+      }
+
+      // ─── ANİME DOSYA VERİTABANI (JSON) ───
+      // Sadece elinizde fiziksel olarak mevcut olan Jujutsu Kaisen s1e1.m3u8 dosyası eklendi.
+      const LOCAL_ANIME_DATABASE = [
+        { 
+          id: 'jujutsu_kaisen', 
+          title: 'Jujutsu Kaisen', 
+          genre: 'Aksiyon', 
+          seasons: [3] // Sadece 1. Sezon 1. Bölüm mevcut olduğu için dizide sadece [1] var.
+        }
+      ];
+
+      let animes = [];
+      
+      const initValidAnimes = () => {
+        return LOCAL_ANIME_DATABASE.map(item => {
+          const defaultImg = `Animes/${item.genre}/${item.id}/thumb.jpg`;
+          const totalEps = item.seasons.reduce((a, b) => a + b, 0);
+          return {
+            id: item.id,
+            title: item.title,
+            genre: item.genre,
+            seasons: item.seasons,
+            eps: totalEps,
+            img: item.img || defaultImg
+          };
+        });
+      };
+      
+      animes = initValidAnimes();
+      if (document.getElementById('stat-anime-count')) document.getElementById('stat-anime-count').textContent = `${animes.length}+`;
+
+      const createCard = (anime) => `
+        <div class="anime-card" data-id="${anime.id}">
+          <div class="card-img-wrapper">
+            <img src="${anime.img}" alt="${anime.title}" class="card-img" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22560%22 viewBox=%220 0 400 560%22><rect width=%22400%22 height=%22560%22 fill=%22%23F3F0F2%22/><text x=%2250%25%22 y=%2250%25%22 font-family=%22sans-serif%22 font-size=%2220%22 fill=%22%23A8A4A6%22 text-anchor=%22middle%22>Resim%20Bulunamadı</text></svg>'"/>
+            <div class="card-badge">⭐ 9.0</div><button class="card-add-btn" aria-label="Listeye Ekle">+</button>
+            <div class="card-overlay"><span class="play-text">İzle</span></div>
+          </div>
+          <div class="card-info"><h3 class="card-title">${anime.title}</h3><span class="card-meta">${anime.genre} · ${anime.eps} Bölüm</span></div>
+        </div>`;
+
+      const populateRow = (rowId, items) => {
+        const row = document.getElementById(rowId);
+        if (!row) return;
+        if (items.length === 0) row.innerHTML = `<div class="no-animes-box"><h3>Kategoriye Ait Anime Bulunamadı 🌸</h3><p>Lütfen yerel sunucunuzun kök dizinindeki <code>Animes/&lt;Tür&gt;/&lt;anime_id&gt;/</code> klasörünün içinde bölümlerin (HLS formatında <code>s1e1.m3u8</code> ve <code>.ts</code> dosyalarının) mevcut olduğundan ve yukarıdaki <code>LOCAL_ANIME_DATABASE</code> JSON dizisinde listelendiğinden emin olun.</p></div>`;
+        else row.innerHTML = items.map(createCard).join('');
+      };
+
+      const setupCarousel = (pId, nId, rId) => {
+        const pBtn = document.getElementById(pId), nBtn = document.getElementById(nId), row = document.getElementById(rId);
+        if (pBtn && nBtn && row) {
+          pBtn.onclick = () => row.scrollBy({ left: -300, behavior: 'smooth' });
+          nBtn.onclick = () => row.scrollBy({ left: 300, behavior: 'smooth' });
+        }
+      };
+      ['continue', 'popular', 'new', 'rec'].forEach(prefix => setupCarousel(`${prefix}-prev`, `${prefix}-next`, `${prefix}-row`));
+
+      const toastContainer = document.getElementById('toast-container');
+      const showToast = (message, icon = '🌸') => {
+        const toast = document.createElement('div');
+        toast.className = 'toast'; toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${message}</span>`;
+        toastContainer.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3500);
+      };
+
+      async function saveUserListsToCloud(userId, listsData) {
+        if (!auth.currentUser) return;
+        try { await setDoc(doc(db, 'artifacts', appId, 'users', userId, 'userData', 'lists'), listsData, { merge: true }); } catch (err) { console.error(err); }
+      }
+      async function loadUserListsFromCloud(userId) {
+        if (!auth.currentUser) return null;
+        try {
+          const snap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'userData', 'lists'));
+          if (snap.exists()) return snap.data();
+        } catch (err) { console.error(err); } return null;
+      }
+
+      async function saveWatchHistory(animeId, season, episode, progressPercent) {
+        const user = auth.currentUser; if (!user) return;
+        try {
+          const historyDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'userData', 'history');
+          let currentHistory = [];
+          const snap = await getDoc(historyDocRef);
+          if (snap.exists()) currentHistory = snap.data().items || [];
+          
+          currentHistory = currentHistory.filter(item => item.animeId !== animeId);
+          currentHistory.unshift({ animeId, season, episode, progress: progressPercent, timestamp: Date.now() });
+          if (currentHistory.length > 12) currentHistory.pop();
+
+          await setDoc(historyDocRef, { items: currentHistory }, { merge: true });
+          userHistory = currentHistory;
+          populateContinueSectionFromHistory();
+        } catch (err) { console.error(err); }
+      }
+      async function loadWatchHistoryFromCloud(userId) {
+        if (!auth.currentUser) return [];
+        try {
+          const snap = await getDoc(doc(db, 'artifacts', appId, 'users', userId, 'userData', 'history'));
+          if (snap.exists()) return snap.data().items || [];
+        } catch (err) { console.error(err); } return [];
+      }
+
+      const populateContinueSectionFromHistory = () => {
+        const continueSection = document.getElementById('continue-section'), continueRow = document.getElementById('continue-row');
+        if (!continueRow || !continueSection) return;
+        if (userHistory.length === 0) { continueSection.style.display = 'none'; return; }
+        
+        continueSection.style.display = 'block';
+        continueRow.innerHTML = userHistory.map(histItem => {
+          const anime = animes.find(a => a.id === histItem.animeId); if (!anime) return '';
+          return `
+            <div class="anime-card continue-card-item" data-id="${anime.id}" data-season="${histItem.season}" data-ep="${histItem.episode}">
+              <div class="card-img-wrapper">
+                <img src="${anime.img}" alt="${anime.title}" class="card-img" loading="lazy" />
+                <div class="card-badge" style="background: var(--sakura-pink);">S:${histItem.season} B:${histItem.episode}</div>
+                <button class="card-add-btn">+</button>
+                <div class="card-overlay"><span class="play-text">%${histItem.progress || 0} İzleme</span></div>
+                <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 6px; background: rgba(0,0,0,0.5);">
+                  <div style="height: 100%; width: ${histItem.progress || 0}%; background: var(--warm-heart-red); border-radius: 0 2px 2px 0;"></div>
+                </div>
+              </div>
+              <div class="card-info"><h3 class="card-title">${anime.title}</h3><span class="card-meta">Sezon ${histItem.season} · Bölüm ${histItem.episode}</span></div>
+            </div>`;
+        }).join('');
+      };
+
+      const updateStatsCounts = () => {
+        ['watchlist', 'completed', 'favorites'].forEach(key => {
+          const el = document.getElementById(`stats-${key}-count`);
+          if (el) el.textContent = userLists[key].length;
+        });
+      };
+
+      const renderListGrid = (tabName = 'watchlist') => {
+        const grid = document.getElementById('list-grid'); if (!grid) return;
+        if (tabName === 'history') {
+          if (userHistory.length === 0) {
+            grid.innerHTML = `<div class="list-grid-empty"><div class="empty-icon">📜</div><p>İzleme geçmişiniz boş.</p></div>`;
+          } else {
+            grid.innerHTML = userHistory.map(histItem => {
+              const anime = animes.find(a => a.id === histItem.animeId); if (!anime) return '';
+              return `
+                <div class="anime-card" data-id="${anime.id}" data-season="${histItem.season}" data-ep="${histItem.episode}">
+                  <div class="card-img-wrapper">
+                    <img src="${anime.img}" alt="${anime.title}" class="card-img" />
+                    <div class="card-badge">S:${histItem.season} B:${histItem.episode}</div>
+                    <div class="card-overlay"><span class="play-text">Kaldığın Yerden</span></div>
+                  </div>
+                  <div class="card-info"><h3 class="card-title">${anime.title}</h3><span class="card-meta">Geçmiş · %${histItem.progress || 0} Tamamlandı</span></div>
+                </div>`;
+            }).join('');
+          }
+          return;
+        }
+        const filtered = animes.filter(a => (userLists[tabName] || []).includes(a.id));
+        if (filtered.length === 0) grid.innerHTML = `<div class="list-grid-empty"><div class="empty-icon">🌸</div><p>Listeniz boş.</p></div>`;
+        else grid.innerHTML = filtered.map(createCard).join('');
+      };
+
+      const updatePlayerActionButtons = () => {
+        if (!currentAnimeData) return;
+        const id = currentAnimeData.id;
+        
+        const config = [
+          { key: 'watchlist', el: 'player-btn-watchlist', textAdd: "Listeye Ekle 📌", textRem: "Listeden Çıkar 📌", activeBg: "var(--sakura-pink)", activeColor: "white" },
+          { key: 'completed', el: 'player-btn-completed', textAdd: "Bitirenlere Ekle ✔️", textRem: "Bitirdiklerimden Çıkar ✔️", activeBg: "var(--mint-calm)", activeColor: "var(--text-main)" },
+          { key: 'favorites', el: 'player-btn-favorites', textAdd: "Favorilere Ekle ❤️", textRem: "Favorilerden Çıkar ❤️", activeBg: "var(--warm-heart-red)", activeColor: "white" }
+        ];
+
+        config.forEach(c => {
+          const btn = document.getElementById(c.el);
+          if (userLists[c.key].includes(id)) {
+            btn.textContent = c.textRem; btn.style.background = c.activeBg; btn.style.color = c.activeColor;
+          } else {
+            btn.textContent = c.textAdd; btn.style.background = ""; btn.style.color = "";
+          }
+        });
+      };
+
+      const toggleListState = async (listName) => {
+        if (!currentAnimeData) return;
+        const id = currentAnimeData.id;
+        if (userLists[listName].includes(id)) {
+          userLists[listName] = userLists[listName].filter(item => item !== id); showToast("Listeden kaldırıldı! 🌸");
+        } else {
+          userLists[listName].push(id); showToast("Listeye eklendi! ✨");
+        }
+        updatePlayerActionButtons(); renderListGrid(document.querySelector('.list-tab.active')?.dataset.tab || 'watchlist'); updateStatsCounts();
+        if (auth.currentUser) await saveUserListsToCloud(auth.currentUser.uid, userLists);
+      };
+
+      ['watchlist', 'completed', 'favorites'].forEach(key => document.getElementById(`player-btn-${key}`).onclick = () => toggleListState(key));
+
+      document.addEventListener('click', async (e) => {
+        if (e.target.closest('.card-add-btn')) { 
+          e.stopPropagation(); 
+          const card = e.target.closest('.anime-card');
+          if (card) {
+            const animeId = card.dataset.id;
+            if (userLists.watchlist.includes(animeId)) {
+              userLists.watchlist = userLists.watchlist.filter(id => id !== animeId); showToast('Listeden kaldırıldı 🌸', '📌');
+            } else {
+              userLists.watchlist.push(animeId); showToast('Listeye eklendi! ✨', '📌');
+            }
+            renderListGrid(document.querySelector('.list-tab.active')?.dataset.tab || 'watchlist');
+            if (auth.currentUser) await saveUserListsToCloud(auth.currentUser.uid, userLists);
+          }
+        }
+      });
+
+      // ─── PLAYER MODAL & HLS (M3U8) OYNATIM ALTYAPISI ───
+      const playerModal = document.getElementById('player-modal'), playerVideo = document.getElementById('player-video');
+      let currentAnimeData = null, currentEp = 0, currentSeason = 1, nextCountdownInterval = null, initialResumeTime = null, lastProgressSave = 0;
+
+      const formatTime = (t) => { if (isNaN(t)) return "00:00"; const m = Math.floor(t / 60), s = Math.floor(t % 60); return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`; };
+
+      async function saveEpisodeProgress(animeId, season, episode, currentTime, duration) {
+        const user = auth.currentUser; if (!user || isNaN(currentTime) || isNaN(duration) || duration <= 0) return;
+        const pct = Math.round((currentTime / duration) * 100);
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'progress', animeId), { season, episode, currentTime, duration, progressPercent: pct, updatedAt: Date.now() }, { merge: true });
+          await saveWatchHistory(animeId, season, episode, pct);
+        } catch (err) { console.error(err); }
+      }
+
+      async function checkAndApplyResumeProgress(anime, seasonNum, episodeNum) {
+        const user = auth.currentUser;
+        if (user) {
+          try {
+            const snap = await getDoc(doc(db, 'artifacts', appId, 'users', user.uid, 'progress', anime.id));
+            if (snap.exists()) {
+              const data = snap.data();
+              if (data.currentTime > 5 && data.currentTime < (data.duration - 10)) {
+                const overlay = document.getElementById('auto-resume-overlay'), text = document.getElementById('auto-resume-text');
+                text.textContent = `Sezon ${data.season} · Bölüm ${data.episode} - ${formatTime(data.currentTime)} saniyesinde kalmıştın.`;
+                overlay.style.display = 'flex';
+                document.getElementById('btn-resume-confirm').onclick = () => { overlay.style.display = 'none'; setEpisodeWithProgress(data.season, data.episode, data.currentTime); };
+                document.getElementById('btn-resume-cancel').onclick = () => { overlay.style.display = 'none'; setEpisodeWithProgress(seasonNum || 1, episodeNum || 1, null); };
+                return;
+              }
+            }
+          } catch (err) { console.error(err); }
+        }
+        if (seasonNum && episodeNum) setEpisode(episodeNum); else showSeasons();
+      }
+
+      const setEpisodeWithProgress = (season, ep, seekTime) => {
+        currentSeason = season; showEpisodes(season); initialResumeTime = (seekTime !== null && !isNaN(seekTime)) ? parseFloat(seekTime) : null; setEpisode(ep);
+      };
+
+      // HLS.js entegre edilmiş, tarayıcı uyumlu güvenli bölüm yükleme fonksiyonu
+      const setEpisode = (ep) => {
+        if (!currentAnimeData || !currentAnimeData.seasons) return;
+        const maxEps = currentAnimeData.seasons[currentSeason - 1] || 0;
+        if (ep < 1 || ep > maxEps) return;
+
+        clearInterval(nextCountdownInterval);
+        document.getElementById('auto-next-overlay').style.display = 'none'; document.getElementById('auto-resume-overlay').style.display = 'none';
+        currentEp = ep;
+        
+        document.querySelectorAll('.ep-btn').forEach(b => b.classList.remove('active'));
+        const activeBtn = Array.from(document.querySelectorAll('.ep-btn')).find(b => b.dataset.ep && parseInt(b.dataset.ep) === ep);
+        if (activeBtn) activeBtn.classList.add('active');
+        
+        document.getElementById('player-meta').textContent = `Sezon ${currentSeason} · Bölüm ${ep} · HD`;
+        document.querySelector('.player-controls').style.opacity = '1'; document.querySelector('.player-controls').style.pointerEvents = 'auto';
+        document.getElementById('video-placeholder').style.display = 'none';
+        
+        const ctrlSpeed = document.getElementById('ctrl-speed'); if (ctrlSpeed) ctrlSpeed.value = "1"; playerVideo.playbackRate = 1.0;
+        
+        playerVideo.style.display = 'block';
+
+        const videoSrc = `Animes/${currentAnimeData.genre}/${currentAnimeData.id}/s${currentSeason}e${ep}.m3u8`;
+        
+        // Hls.js desteği kontrolü (Masaüstü Chrome, Firefox, Edge vb. için)
+        if (Hls.isSupported()) {
+          if (window.hls) {
+            window.hls.destroy(); // Önceki oynatım kanalını temizle
+          }
+          const hls = new Hls({
+            maxMaxBufferLength: 15,
+            enableWorker: true,
+            lowLatencyMode: true,
+            backBufferLength: 60
+          });
+          
+          // attachMedia, loadSource tetiklenmeden ÖNCE yapılmalıdır. Siyah ekran sorununu önlemek için çok kritik!
+          hls.attachMedia(playerVideo);
+          hls.on(Hls.Events.MEDIA_ATTACHED, function () {
+            hls.loadSource(videoSrc);
+          });
+          
+          window.hls = hls;
+          
+          hls.on(Hls.Events.MANIFEST_PARSED, function() {
+            if (initialResumeTime !== null) {
+              playerVideo.currentTime = initialResumeTime;
+              initialResumeTime = null;
+            }
+            playerVideo.play().catch((err) => {
+              console.warn("Otomatik oynatma tarayıcı engeline takıldı. Ses kapatılıp tekrar deneniyor...", err);
+              playerVideo.muted = true;
+              playerVideo.play().catch(e => {
+                console.error("Video oynatılamadı. Kullanıcı etkileşimi bekleniyor.", e);
+                showToast("Videoyu başlatmak için lütfen Oynat butonuna basın! 🌸", "🎥");
+              });
+            });
+          });
+          
+          // Detaylı HLS Hata Yönetimi ve Geri Bildirimi
+          hls.on(Hls.Events.ERROR, function (event, data) {
+            console.error("HLS Hatası algılandı:", data);
+            if (data.fatal) {
+              switch (data.type) {
+                case Hls.ErrorTypes.NETWORK_ERROR:
+                  console.warn("Ağ hatası, kurtarılmaya çalışılıyor...", data.details);
+                  hls.startLoad();
+                  break;
+                case Hls.ErrorTypes.MEDIA_ERROR:
+                  console.warn("Medya hatası, kurtarılmaya çalışılıyor...", data.details);
+                  hls.recoverMediaError();
+                  break;
+                default:
+                  showToast("Video yüklenemedi! Bölüm dosyasının (.m3u8) doğru dizinde olduğunu kontrol edin.", "⚠️");
+                  hls.destroy();
+                  break;
+              }
+            } else {
+              // Kritik olmayan ancak yüklemeyi engelleyen manifest hataları
+              if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR || data.details === Hls.ErrorDetails.MANIFEST_LOAD_TIMEOUT) {
+                showToast(`Dosya bulunamadı veya CORS engeli var! Yol: ${videoSrc}`, "⚠️");
+              }
+            }
+          });
+        } 
+        // Safari ve Mobil iOS yerel HLS desteği kontrolü
+        else if (playerVideo.canPlayType('application/vnd.apple.mpegurl')) {
+          playerVideo.src = videoSrc;
+          playerVideo.addEventListener('loadedmetadata', function() {
+            if (initialResumeTime !== null) {
+              playerVideo.currentTime = initialResumeTime;
+              initialResumeTime = null;
+            }
+            playerVideo.play().catch(e => {
+              console.warn("Safari otomatik oynatma engeli:", e);
+              showToast("Oynatmak için oynat tuşuna basabilirsiniz. 🌸", "🎥");
+            });
+          });
+        } else {
+          showToast("Tarayıcınız HLS (.m3u8) video formatını desteklemiyor! Lütfen Chrome veya Firefox kullanın.", "⚠️");
+        }
+
+        const nextBanner = document.getElementById('next-ep-banner');
+        if (ep < maxEps) { nextBanner.style.display = 'flex'; document.getElementById('next-ep-title').textContent = `Bölüm ${ep + 1}`; } 
+        else nextBanner.style.display = 'none';
+
+        updatePlayerActionButtons();
+        if (isWatchPartyActive && isRoomHost && activeRoomId) syncRoomHostPlaybackState();
+      };
+
+      const showEpisodes = (season) => {
+        currentSeason = season;
+        document.getElementById('sidebar-title').textContent = `${season}. Sezon Bölümleri`;
+        document.getElementById('back-to-seasons').style.display = 'block'; document.getElementById('seasons-list').style.display = 'none';
+        const epList = document.getElementById('episodes-list'); epList.style.display = 'flex';
+        
+        const maxEps = currentAnimeData.seasons[season - 1] || 0;
+        epList.innerHTML = Array.from({length: maxEps}, (_, i) => `<button class="ep-btn" data-ep="${i+1}">Bölüm ${i+1}</button>`).join('');
+        epList.querySelectorAll('.ep-btn').forEach(btn => btn.onclick = () => setEpisode(parseInt(btn.dataset.ep)));
+      };
+
+      const showSeasons = () => {
+        document.getElementById('sidebar-title').textContent = 'Sezonlar';
+        document.getElementById('back-to-seasons').style.display = 'none'; document.getElementById('episodes-list').style.display = 'none'; document.getElementById('next-ep-banner').style.display = 'none';
+        clearInterval(nextCountdownInterval); document.getElementById('auto-next-overlay').style.display = 'none'; document.getElementById('auto-resume-overlay').style.display = 'none';
+        
+        currentEp = 0; document.querySelector('.player-controls').style.opacity = '0.3'; document.querySelector('.player-controls').style.pointerEvents = 'none';
+        playerVideo.style.display = 'none'; playerVideo.pause(); document.getElementById('video-placeholder').style.display = 'flex';
+        
+        const seasonsList = document.getElementById('seasons-list'); seasonsList.style.display = 'flex';
+        seasonsList.innerHTML = Array.from({length: currentAnimeData.seasons.length}, (_, i) => `<button class="ep-btn season-btn" data-season="${i+1}">${i+1}. Sezon</button>`).join('');
+        seasonsList.querySelectorAll('.season-btn').forEach(btn => btn.onclick = () => showEpisodes(parseInt(btn.dataset.season)));
+      };
+      document.getElementById('back-to-seasons').onclick = showSeasons;
+
+      const openPlayer = (anime, resS = null, resE = null) => {
+        currentAnimeData = anime;
+        document.getElementById('player-title').textContent = anime.title; document.getElementById('video-anime-title').textContent = anime.title;
+        playerModal.classList.add('active'); document.body.style.overflow = 'hidden';
+        checkAndApplyResumeProgress(anime, resS, resE);
+      };
+
+      // ─── GÜVENLİ VE HASSAS İLERLEME/GERİLEME & SCRUBBING KONTROLLERİ ───
+      const ctrlPlay = document.getElementById('ctrl-play'), progressFill = document.getElementById('progress-fill'), progressThumb = document.getElementById('progress-thumb'), progressBar = document.getElementById('progress-bar');
+      let isDraggingProgress = false;
+
+      playerVideo.addEventListener('loadedmetadata', () => {
+        if (isFinite(playerVideo.duration)) document.getElementById('time-total').textContent = formatTime(playerVideo.duration);
+        if (initialResumeTime !== null) { playerVideo.currentTime = initialResumeTime; initialResumeTime = null; }
+      });
+
+      playerVideo.addEventListener('play', () => { ctrlPlay.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`; if (isWatchPartyActive && isRoomHost && activeRoomId && !syncBlockActive) syncRoomHostPlaybackState(); });
+      playerVideo.addEventListener('pause', () => { ctrlPlay.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`; if (isWatchPartyActive && isRoomHost && activeRoomId && !syncBlockActive) syncRoomHostPlaybackState(); });
+      const togglePlay = () => { if (!isNaN(playerVideo.duration)) playerVideo.paused ? playerVideo.play() : playerVideo.pause(); };
+      ctrlPlay.onclick = togglePlay;
+
+      const triggerRewind = () => {
+        if (!playerVideo.duration || isNaN(playerVideo.duration)) return;
+        playerVideo.currentTime = Math.max(0, playerVideo.currentTime - 10);
+        
+        const ripple = document.getElementById('ripple-left');
+        ripple.classList.remove('animate'); void ripple.offsetWidth; ripple.classList.add('animate');
+        setTimeout(() => ripple.classList.remove('animate'), 500); showToast('10 saniye geri ↩️', '🌸');
+        if (isWatchPartyActive && isRoomHost && activeRoomId) syncRoomHostPlaybackState();
+      };
+
+      const triggerForward = () => {
+        if (!playerVideo.duration || isNaN(playerVideo.duration)) return;
+        playerVideo.currentTime = Math.min(playerVideo.duration, playerVideo.currentTime + 10);
+        
+        const ripple = document.getElementById('ripple-right');
+        ripple.classList.remove('animate'); void ripple.offsetWidth; ripple.classList.add('animate');
+        setTimeout(() => ripple.classList.remove('animate'), 500); showToast('10 saniye ileri ↪️', '🌸');
+        if (isWatchPartyActive && isRoomHost && activeRoomId) syncRoomHostPlaybackState();
+      };
+
+      document.getElementById('ctrl-rewind').onclick = triggerRewind; document.getElementById('ctrl-forward').onclick = triggerForward;
+      document.getElementById('ctrl-next-ep').onclick = () => setEpisode(currentEp + 1); document.getElementById('ctrl-prev-ep').onclick = () => setEpisode(currentEp - 1); document.getElementById('next-ep-btn').onclick = () => setEpisode(currentEp + 1);
+
+      // Çift/Tek Tıklama Alanları (Sol: Geri, Orta: Durdur/Başlat, Sağ: İleri)
+      let lastClickLeft = 0, lastClickRight = 0;
+      document.getElementById('zone-left').onclick = () => {
+        const now = Date.now(); if (now - lastClickLeft < 300) { triggerRewind(); lastClickLeft = 0; } else { lastClickLeft = now; setTimeout(() => { if(lastClickLeft !== 0) togglePlay(); }, 305); }
+      };
+      document.getElementById('zone-center').onclick = () => togglePlay();
+      document.getElementById('zone-right').onclick = () => {
+        const now = Date.now(); if (now - lastClickRight < 300) { triggerForward(); lastClickRight = 0; } else { lastClickRight = now; setTimeout(() => { if(lastClickRight !== 0) togglePlay(); }, 305); }
+      };
+      
+      // Progress Bar Kaydırma (Scrubbing) İşlemleri
+      const updateProgressFromEvent = (e) => {
+        if (!playerVideo.duration || isNaN(playerVideo.duration)) return;
+        const rect = progressBar.getBoundingClientRect();
+        let clickX = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+        const pct = clickX / rect.width;
+        
+        playerVideo.currentTime = pct * playerVideo.duration;
+        progressFill.style.width = `${pct * 100}%`;
+        progressThumb.style.left = `${pct * 100}%`;
+      };
+
+      // Mouse ile kaydırma
+      progressBar.addEventListener('mousedown', (e) => { isDraggingProgress = true; updateProgressFromEvent(e); });
+      document.addEventListener('mousemove', (e) => { if (isDraggingProgress) updateProgressFromEvent(e); });
+      document.addEventListener('mouseup', () => { 
+        if (isDraggingProgress) { isDraggingProgress = false; if (isWatchPartyActive && isRoomHost && activeRoomId) syncRoomHostPlaybackState(); } 
+      });
+
+      // Dokunmatik ekranlarda kaydırma (Mobil uyumluluk için)
+      progressBar.addEventListener('touchstart', (e) => { isDraggingProgress = true; updateProgressFromEvent(e.touches[0]); }, { passive: true });
+      document.addEventListener('touchmove', (e) => { if (isDraggingProgress) updateProgressFromEvent(e.touches[0]); }, { passive: true });
+      document.addEventListener('touchend', () => { 
+        if (isDraggingProgress) { isDraggingProgress = false; if (isWatchPartyActive && isRoomHost && activeRoomId) syncRoomHostPlaybackState(); } 
+      });
+
+      playerVideo.addEventListener('timeupdate', () => {
+        const dur = playerVideo.duration;
+        if (!isFinite(dur) || dur <= 0) return;
+        
+        if (!isDraggingProgress) {
+          const pct = (playerVideo.currentTime / dur) * 100;
+          progressFill.style.width = `${pct}%`; progressThumb.style.left = `${pct}%`;
+          document.getElementById('time-current').textContent = formatTime(playerVideo.currentTime);
+        }
+
+        const now = Date.now();
+        if (now - lastProgressSave > 8000) {
+          lastProgressSave = now;
+          if (currentAnimeData && currentEp > 0) saveEpisodeProgress(currentAnimeData.id, currentSeason, currentEp, playerVideo.currentTime, dur);
+          if (isWatchPartyActive && isRoomHost && activeRoomId && !playerVideo.paused) syncRoomHostPlaybackState();
+        }
+      });
+
+      document.getElementById('ctrl-fullscreen').onclick = () => {
+        const pArea = document.getElementById('player-main-area');
+        if (!document.fullscreenElement) pArea.requestFullscreen().catch(err => console.log(err)); else document.exitFullscreen();
+      };
+      
+      const volumeRange = document.getElementById('volume-range');
+      volumeRange.oninput = (e) => playerVideo.volume = e.target.value / 100;
+      document.getElementById('ctrl-speed').onchange = (e) => { playerVideo.playbackRate = parseFloat(e.target.value); showToast(`Oynatma hızı: ${e.target.value}x`, '⚡'); };
+
+      // Klavye Kısayolları Modalı & İşleyicisi
+      const shortcutsModal = document.getElementById('shortcuts-modal');
+      document.getElementById('ctrl-shortcuts').onclick = () => shortcutsModal.classList.add('active');
+      document.getElementById('shortcuts-close').onclick = () => shortcutsModal.classList.remove('active');
+      document.getElementById('btn-shortcuts-ok').onclick = () => shortcutsModal.classList.remove('active');
+
+      document.addEventListener('keydown', (e) => {
+        if (!playerModal.classList.contains('active') || ['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+        switch(e.key.toLowerCase()) {
+          case 'arrowright': e.preventDefault(); triggerForward(); break;
+          case 'arrowleft': e.preventDefault(); triggerRewind(); break;
+          case ' ': e.preventDefault(); togglePlay(); break;
+          case 'f': e.preventDefault(); document.getElementById('ctrl-fullscreen').click(); break;
+          case 'm': e.preventDefault(); playerVideo.muted = !playerVideo.muted; volumeRange.value = playerVideo.muted ? 0 : playerVideo.volume * 100; showToast(playerVideo.muted ? "Ses kapatıldı 🔇" : "Ses açıldı 🔊", "🔊"); break;
+          case 'arrowup': e.preventDefault(); playerVideo.volume = Math.min(1, playerVideo.volume + 0.05); volumeRange.value = Math.round(playerVideo.volume * 100); showToast(`Ses Seviyesi: %${volumeRange.value}`, "🔊"); break;
+          case 'arrowdown': e.preventDefault(); playerVideo.volume = Math.max(0, playerVideo.volume - 0.05); volumeRange.value = Math.round(playerVideo.volume * 100); showToast(`Ses Seviyesi: %${volumeRange.value}`, "🔊"); break;
+        }
+      });
+
+      const openAutoNextOverlay = () => {
+        const overlay = document.getElementById('auto-next-overlay'), ring = document.getElementById('countdown-ring'), countdownNum = document.getElementById('countdown-number');
+        document.getElementById('auto-next-ep-name').textContent = `Sezon ${currentSeason} · Bölüm ${currentEp + 1}`; overlay.style.display = 'flex';
+        let timeLeft = 5; countdownNum.textContent = timeLeft;
+        const circumference = 2 * Math.PI * 34; ring.style.strokeDasharray = `${circumference} ${circumference}`; ring.style.strokeDashoffset = 0;
+        
+        clearInterval(nextCountdownInterval);
+        nextCountdownInterval = setInterval(() => {
+          timeLeft -= 1; countdownNum.textContent = timeLeft;
+          ring.style.strokeDashoffset = circumference - ((timeLeft / 5) * 100 / 100) * circumference;
+          if (timeLeft <= 0) { clearInterval(nextCountdownInterval); overlay.style.display = 'none'; setEpisode(currentEp + 1); }
+        }, 1000);
+      };
+
+      document.getElementById('auto-next-cancel').onclick = () => { clearInterval(nextCountdownInterval); document.getElementById('auto-next-overlay').style.display = 'none'; showToast('Otomatik geçiş iptal edildi 🌸', '✨'); };
+      document.getElementById('auto-next-play-now').onclick = () => { clearInterval(nextCountdownInterval); document.getElementById('auto-next-overlay').style.display = 'none'; setEpisode(currentEp + 1); };
+
+      playerVideo.addEventListener('ended', () => { 
+        if (currentAnimeData && currentAnimeData.seasons && currentEp < (currentAnimeData.seasons[currentSeason - 1] || 0)) openAutoNextOverlay();
+        else showToast('Sezonun son bölümünü tamamladınız! 🎉', '🌸');
+      });
+
+      let idleTimer = null;
+      const playerContainer = document.querySelector('.player-container'), playerControls = document.getElementById('player-controls'), playerHeader = document.getElementById('player-header'), playerCloseBtn = document.getElementById('player-close');
+      const showPlayerUI = () => { playerControls.style.opacity = '1'; playerControls.style.pointerEvents = 'auto'; playerHeader.style.opacity = '1'; playerHeader.style.pointerEvents = 'auto'; playerCloseBtn.style.opacity = '1'; playerCloseBtn.style.pointerEvents = 'auto'; playerContainer.style.cursor = 'default'; };
+      const hidePlayerUI = () => { if (!playerVideo.paused && document.getElementById('auto-next-overlay').style.display !== 'flex' && document.getElementById('video-placeholder').style.display !== 'flex') { playerControls.style.opacity = '0'; playerControls.style.pointerEvents = 'none'; playerHeader.style.opacity = '0'; playerHeader.style.pointerEvents = 'none'; playerCloseBtn.style.opacity = '0'; playerCloseBtn.style.pointerEvents = 'none'; playerContainer.style.cursor = 'none'; } };
+      const resetIdleTimer = () => { showPlayerUI(); clearTimeout(idleTimer); if (document.fullscreenElement) idleTimer = setTimeout(hidePlayerUI, 3000); };
+
+      document.getElementById('player-main-area').addEventListener('mousemove', resetIdleTimer);
+      document.getElementById('player-main-area').addEventListener('click', resetIdleTimer);
+      playerVideo.addEventListener('play', resetIdleTimer); playerVideo.addEventListener('pause', showPlayerUI);
+      document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) { clearTimeout(idleTimer); showPlayerUI(); } else resetIdleTimer(); });
+
+      // Oynatıcı kapatıldığında Hls kütüphane bağlantısı güvenle yok edilir
+      const closePlayer = () => { 
+        clearInterval(nextCountdownInterval); clearTimeout(idleTimer); document.getElementById('auto-next-overlay').style.display = 'none'; document.getElementById('auto-resume-overlay').style.display = 'none';
+        if (isWatchPartyActive) leaveWatchPartyRoom();
+        if (window.hls) {
+          window.hls.destroy();
+          window.hls = null;
+        }
+        playerModal.classList.remove('active'); document.body.style.overflow = ''; playerVideo.pause(); showPlayerUI();
+      };
+      document.getElementById('player-close').onclick = closePlayer; document.getElementById('player-backdrop').onclick = closePlayer;
+
+      document.addEventListener('click', (e) => {
+        const card = e.target.closest('.anime-card');
+        if (card && !e.target.closest('.card-add-btn') && !e.target.closest('.continue-card-item')) {
+          const anime = animes.find(a => a.id === card.dataset.id); if (anime) openPlayer(anime);
+        } else if (card && e.target.closest('.continue-card-item')) {
+           const anime = animes.find(a => a.id === card.dataset.id); 
+           if (anime) openPlayer(anime, parseInt(card.dataset.season), parseInt(card.dataset.ep));
+        }
+      });
+
+      const setRandomFeatured = () => {
+        if (animes.length === 0) return;
+        const rand = animes[Math.floor(Math.random() * animes.length)];
+        document.getElementById('featured-img').src = rand.img; document.getElementById('featured-title').textContent = rand.title; document.getElementById('featured-genre').textContent = rand.genre;
+        const playHandler = () => openPlayer(rand);
+        document.getElementById('featured-play-btn').onclick = playHandler; document.getElementById('hero-start-btn').onclick = playHandler;
+      };
+      setRandomFeatured();
+
+      // ─── WATCH PARTY INTERACTION LOGIC (FIRESTORE SENKRONİZASYONU) ───
+      const wpSetupContainer = document.getElementById('wp-setup-container'), wpActiveContainer = document.getElementById('wp-active-container'), wpRoomDisplay = document.getElementById('wp-room-id-display'), wpRoleDisplay = document.getElementById('wp-role-display'), wpMembersList = document.getElementById('wp-members-list'), wpJoinInput = document.getElementById('wp-join-input');
+
+      document.getElementById('wp-create-btn').onclick = async () => {
+        const user = auth.currentUser; if (!user) return showToast("Oda oluşturmak için önce Giriş Yapmalısınız 🌸", "⚠️");
+        const roomId = "room-" + crypto.randomUUID(), userName = user.displayName || user.email?.split('@')[0] || "Oynatıcı";
+        try {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId), { hostId: user.uid, hostName: userName, animeId: currentAnimeData ? currentAnimeData.id : "none", season: currentSeason, episode: currentEp, currentTime: playerVideo.currentTime || 0, isPlaying: !playerVideo.paused, members: [userName], lastUpdated: Date.now() });
+          isWatchPartyActive = true; isRoomHost = true; activeRoomId = roomId;
+          wpSetupContainer.style.display = 'none'; wpActiveContainer.style.display = 'flex'; wpRoomDisplay.textContent = roomId; wpRoleDisplay.textContent = "Yönetici (Host)";
+          subscribeToRoom(roomId); showToast("Odanız Başarıyla Oluşturuldu! 🌸");
+        } catch (err) { console.error(err); showToast("Oda oluşturulurken hata oluştu.", "⚠️"); }
+      };
+
+      document.getElementById('wp-join-btn').onclick = async () => {
+        const user = auth.currentUser; if (!user) return showToast("Odya katılmak için önce Giriş Yapmalısınız 🌸", "⚠️");
+        const roomId = wpJoinInput.value.trim(); if (!roomId) return showToast("Lütfen geçerli bir Oda Kodu girin ⚠️");
+        const userName = user.displayName || user.email?.split('@')[0] || "Anonim", roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId);
+        try {
+          const snap = await getDoc(roomRef); if (!snap.exists()) return showToast("Böyle bir oda bulunamadı! ⚠️");
+          await updateDoc(roomRef, { members: arrayUnion(userName) });
+          isWatchPartyActive = true; isRoomHost = false; activeRoomId = roomId;
+          wpSetupContainer.style.display = 'none'; wpActiveContainer.style.display = 'flex'; wpRoomDisplay.textContent = roomId; wpRoleDisplay.textContent = "İzleyici (Guest)";
+          subscribeToRoom(roomId); showToast("Odaya başarıyla bağlanıldı! 🍿"); wpJoinInput.value = "";
+        } catch (err) { console.error(err); showToast("Bağlanma hatası oluştu.", "⚠️"); }
+      };
+
+      function subscribeToRoom(roomId) {
+        if (roomUnsubscribe) roomUnsubscribe();
+        roomUnsubscribe = onSnapshot(doc(db, 'artifacts', appId, 'public', 'data', 'rooms', roomId), (snapshot) => {
+          if (!snapshot.exists()) { showToast("Oda kapatıldı 🚪", "⚠️"); leaveWatchPartyRoom(); return; }
+          const data = snapshot.data();
+          wpMembersList.innerHTML = (data.members || []).map(m => `<div style="display:flex; align-items:center; gap:0.25rem;"><span style="color:var(--sakura-pink)">🌸</span> ${m} ${m === data.hostName ? '👑' : ''}</div>`).join('');
+          
+          if (!isRoomHost) {
+            syncBlockActive = true;
+            if (data.animeId !== "none" && (!currentAnimeData || currentAnimeData.id !== data.animeId || currentSeason !== data.season || currentEp !== data.episode)) {
+              const targetAnime = animes.find(a => a.id === data.animeId);
+              if (targetAnime) { currentAnimeData = targetAnime; document.getElementById('player-title').textContent = targetAnime.title; showEpisodes(data.season); setEpisode(data.episode); }
+            }
+            if (playerVideo.readyState >= 1) {
+              if (data.isPlaying && playerVideo.paused) playerVideo.play().catch(() => {});
+              else if (!data.isPlaying && !playerVideo.paused) playerVideo.pause();
+              if (Math.abs(playerVideo.currentTime - data.currentTime) > 3.5) playerVideo.currentTime = data.currentTime;
+            } else initialResumeTime = data.currentTime;
+            setTimeout(() => { syncBlockActive = false; }, 400);
+          }
+        }, (error) => console.error("Watch party senkronizasyon kesintisi:", error));
+      }
+
+      async function syncRoomHostPlaybackState() {
+        if (!isWatchPartyActive || !isRoomHost || !activeRoomId || syncBlockActive) return;
+        try { await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'rooms', activeRoomId), { animeId: currentAnimeData ? currentAnimeData.id : "none", season: currentSeason, episode: currentEp, currentTime: playerVideo.currentTime || 0, isPlaying: !playerVideo.paused, lastUpdated: Date.now() }); } catch (err) { console.warn("Oda senkronize edilemedi:", err); }
+      }
+
+      async function leaveWatchPartyRoom() {
+        if (!activeRoomId) return;
+        if (roomUnsubscribe) { roomUnsubscribe(); roomUnsubscribe = null; }
+        const roomRef = doc(db, 'artifacts', appId, 'public', 'data', 'rooms', activeRoomId);
+        try {
+          const user = auth.currentUser, userName = user ? (user.displayName || user.email?.split('@')[0] || "Oynatıcı") : "Anonim";
+          if (isRoomHost) { await deleteDoc(roomRef); showToast("Odayı kapattınız 🚪"); } 
+          else { await updateDoc(roomRef, { members: arrayRemove(userName) }); showToast("Odadan ayrıldınız 👋"); }
+        } catch (e) { console.log(e); }
+        isWatchPartyActive = false; isRoomHost = false; activeRoomId = null;
+        wpSetupContainer.style.display = 'flex'; wpActiveContainer.style.display = 'none'; wpRoomDisplay.textContent = "";
+      }
+
+      document.getElementById('wp-leave-btn').onclick = leaveWatchPartyRoom;
+      document.getElementById('wp-copy-code').onclick = () => {
+        const code = wpRoomDisplay.textContent; if (!code) return;
+        const el = document.createElement('textarea'); el.value = code; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+        showToast("Oda kodu kopyalandı! 📋✨");
+      };
+
+      // ─── LOGIN & SETTINGS ───
+      const loginModal = document.getElementById('login-modal'), switchLink = document.getElementById('switch-to-register'), submitBtn = document.getElementById('login-submit-btn'), modalTitle = document.querySelector('#login-card .modal-title'), modalSub = document.querySelector('#login-card .modal-sub');
+      let isRegisterMode = false;
+      const closeLogin = () => { loginModal.classList.remove('active'); isRegisterMode = false; modalTitle.textContent = "Hoş Geldin 🌸"; modalSub.textContent = "İzleme geçmişin ve listelerini kaydet"; submitBtn.textContent = "Giriş Yap"; switchLink.innerHTML = "Kayıt Ol"; };
+      document.getElementById('login-close').onclick = closeLogin; loginModal.onclick = (e) => { if(e.target === loginModal) closeLogin(); };
+
+      const settingsModal = document.getElementById('settings-modal'); document.getElementById('settings-close').onclick = () => settingsModal.classList.remove('active');
+
+      switchLink.onclick = (e) => {
+        e.preventDefault(); isRegisterMode = !isRegisterMode;
+        if (isRegisterMode) { modalTitle.textContent = "Kayıt Ol 🌸"; modalSub.textContent = "Yepyeni bir anime dünyasına katılın!"; submitBtn.textContent = "Kayıt Ol"; switchLink.innerHTML = "Giriş Yap"; } 
+        else closeLogin();
+      };
+
+      document.getElementById('login-form').onsubmit = async (e) => {
+        e.preventDefault(); const email = document.getElementById('email-input').value, password = document.getElementById('password-input').value;
+        try { if (isRegisterMode) { await createUserWithEmailAndPassword(auth, email, password); showToast("Başarıyla kayıt olundu! 🎉"); } else { await signInWithEmailAndPassword(auth, email, password); showToast("Başarıyla giriş yapıldı! 🌸"); } closeLogin(); } catch (err) { console.error(err); showToast(`İşlem başarısız: ${err.message.replace("Firebase:", "")}`, '⚠️'); }
+      };
+
+      document.getElementById('google-login-btn').onclick = async () => {
+        try { await signInWithPopup(auth, new GoogleAuthProvider()); showToast("Google ile giriş yapıldı! 🌸"); closeLogin(); } catch (err) { console.error(err); showToast(`Google giriş hatası: ${err.message}`, '⚠️'); }
+      };
+
+      document.getElementById('settings-form').onsubmit = async (e) => {
+        e.preventDefault(); const user = auth.currentUser; if (!user) return;
+        const newUsername = document.getElementById('settings-username').value, newPassword = document.getElementById('settings-password').value;
+        try {
+          if (newUsername) { await updateProfile(user, { displayName: newUsername }); const navUserName = document.getElementById('nav-user-name'); if (navUserName) navUserName.textContent = newUsername; }
+          if (newPassword) await updatePassword(user, newPassword);
+          showToast("Profil başarıyla güncellendi! ✨"); settingsModal.classList.remove('active');
+        } catch (err) { console.error(err); showToast(`Güncelleme başarısız: ${err.message}`, '⚠️'); }
+      };
+
+      document.getElementById('settings-logout-btn').onclick = async () => { try { await signOut(auth); showToast("Başarıyla çıkış yapıldı. Güle güle! 👋"); settingsModal.classList.remove('active'); } catch (err) { console.error(err); } };
+
+      const updateAuthUI = (user) => {
+        const authNavContainer = document.getElementById('auth-nav-container'); if (!authNavContainer) return;
+        if (user && !user.isAnonymous) {
+          authNavContainer.innerHTML = `<span style="font-weight: 600; font-size: 0.95rem; color: var(--text-main); cursor: pointer;" id="nav-user-name">${user.displayName || user.email.split('@')[0]}</span><button class="ctrl-btn" id="nav-settings-btn" title="Hesap Ayarları" style="display: flex; align-items: center;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>`;
+          document.getElementById('nav-settings-btn').onclick = () => { updateStatsCounts(); document.getElementById('settings-username').value = user.displayName || ""; settingsModal.classList.add('add'); settingsModal.classList.add('active'); };
+          document.getElementById('nav-user-name').onclick = () => document.getElementById('nav-settings-btn').click();
+        } else {
+          authNavContainer.innerHTML = `<button class="login-btn" id="login-btn">Giriş Yap</button>`;
+          document.getElementById('login-btn').onclick = () => loginModal.classList.add('active');
+        }
+      };
+
+      const initAuth = async () => { try { if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) { await signInWithCustomToken(auth, __initial_auth_token); } else { await signInAnonymously(auth); } } catch (err) { console.warn(err); } };
+      await initAuth();
+
+      onAuthStateChanged(auth, async (user) => {
+        updateAuthUI(user);
+        if (user) {
+          const cloudData = await loadUserListsFromCloud(user.uid);
+          userLists = cloudData ? { watchlist: cloudData.watchlist || [], completed: cloudData.completed || [], favorites: cloudData.favorites || [] } : { watchlist: [], completed: [], favorites: [] };
+          userHistory = await loadWatchHistoryFromCloud(user.uid); populateContinueSectionFromHistory();
+        } else { userLists = { watchlist: [], completed: [], favorites: [] }; userHistory = []; populateContinueSectionFromHistory(); }
+        renderListGrid(document.querySelector('.list-tab.active')?.dataset.tab || 'watchlist');
+      });
+
+      const searchOverlay = document.getElementById('search-overlay'), searchInput = document.getElementById('search-input'), searchResults = document.getElementById('search-results');
+      document.getElementById('search-toggle-btn').onclick = () => { searchOverlay.classList.add('active'); setTimeout(() => searchInput.focus(), 100); };
+      document.getElementById('search-close').onclick = () => { searchOverlay.classList.remove('active'); searchInput.value = ''; searchResults.innerHTML = ''; };
+      searchInput.oninput = (e) => {
+        const val = e.target.value.toLowerCase(); if (val.length < 2) { searchResults.innerHTML = ''; return; }
+        const results = animes.filter(a => a.title.toLowerCase().includes(val));
+        searchResults.innerHTML = results.length ? results.map(createCard).join('') : '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted)">Bulunamadı 🌸</p>';
+      };
+
+      document.querySelectorAll('.list-tab').forEach(tab => { tab.onclick = () => { document.querySelectorAll('.list-tab.active').forEach(t => t.classList.remove('active')); tab.classList.add('active'); renderListGrid(tab.dataset.tab); }; });
+
+      document.querySelectorAll('.genre-chip').forEach(chip => {
+        chip.onclick = () => {
+          document.querySelectorAll('.genre-chip').forEach(c => c.classList.remove('active')); chip.classList.add('active');
+          const genre = chip.textContent.replace(/[\u{1F300}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F900}-\u{1F9FF}\u{1FA70}-\u{1FAFF}]/gu, '').trim();
+          document.querySelector('#popular-section .section-title').textContent = chip.dataset.genre === 'all' ? 'Popüler Animeler' : `${genre} Animeleri`;
+          populateRow('popular-row', chip.dataset.genre === 'all' ? animes : animes.filter(a => a.genre.toLowerCase() === genre.toLowerCase()));
+        };
+      });
+
+      // İlk yüklemede popüler anime satırını doldur
+      populateRow('popular-row', animes);
+      populateRow('new-row', [...animes].reverse());
+      populateRow('rec-row', [...animes].sort(() => 0.5 - Math.random()));
+    });
+  </script>
+</body>
+</html>
