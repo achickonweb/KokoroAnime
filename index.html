@@ -322,29 +322,25 @@
     .list-grid-empty { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: var(--text-light); gap: 1rem; }
     .empty-icon { font-size: 3rem; opacity: 0.5; }
 
-    .player-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); }
-    .player-modal.active { opacity: 1; visibility: visible; }
-    .player-backdrop { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); }
-    
-    .player-container { position: relative; width: 95%; max-width: 1200px; height: 85vh; max-height: 750px; background: var(--milky-white); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transform: scale(0.95) translateY(20px); transition: transform var(--transition-bounce), cursor 0.3s ease; box-shadow: 0 24px 48px rgba(0,0,0,0.5); }
-    .player-container.layout-split { flex-direction: row; height: 85vh; max-height: 750px; align-items: stretch; }
-    .player-main { flex: 1; position: relative; display: flex; flex-direction: column; background: #000; height: 100%; min-height: 0; }
-    .player-sidebar { width: 320px; display: flex; flex-direction: column; background: var(--milky-white); border-left: 1px solid var(--light-gray-pink); height: 100%; overflow-y: auto; min-height: 0; }
-    
-    @media (max-width: 900px) {
-      .player-container.layout-split { flex-direction: column; height: 95vh; max-height: none; }
-      .player-main { flex: 0 0 auto; aspect-ratio: 16 / 9; height: auto; }
-      .player-sidebar { width: 100%; flex: 1; border-left: none; border-top: 1px solid var(--light-gray-pink); overflow-y: auto; }
-    }
+    /* ─── WATCH PAGE (full screen page, replaces modal) ─── */
+    .watch-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; background: #0a0809; display: flex; flex-direction: column; transform: translateY(100%); transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1); overflow: hidden; }
+    .watch-page.active { transform: translateY(0); }
 
-    .player-modal.active .player-container { transform: scale(1) translateY(0); }
-    .player-close { position: absolute; top: 1rem; right: 1rem; width: 40px; height: 40px; background: rgba(0,0,0,0.6); color: white; border-radius: 50%; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; z-index: 12; transition: background var(--transition-fast), opacity 0.3s ease, pointer-events 0.3s ease; }
-    .player-close:hover { background: var(--warm-heart-red); }
-    
-    .player-header { position: absolute; top: 0; left: 0; width: 100%; z-index: 10; background: linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 100%); color: white; border-bottom: none; padding: 1.5rem; transition: opacity 0.3s ease, pointer-events 0.3s ease; }
-    .player-title { font-size: 1.5rem; margin-bottom: 0.2rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .player-meta { color: var(--sakura-pink); font-size: 0.9rem; text-shadow: 0 1px 2px rgba(0,0,0,0.5); font-weight: 500; }
-    
+    /* Top bar */
+    .watch-topbar { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.5rem; background: linear-gradient(to bottom, rgba(10,8,9,0.95), transparent); position: absolute; top: 0; left: 0; width: 100%; z-index: 20; transition: opacity 0.3s ease; }
+    .watch-back-btn { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1); color: white; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
+    .watch-back-btn:hover { background: var(--warm-heart-red); }
+    .watch-back-btn svg { width: 20px; height: 20px; }
+    .watch-topbar-info { flex: 1; min-width: 0; }
+    .watch-topbar-title { font-size: 1rem; font-weight: 700; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .watch-topbar-meta { font-size: 0.78rem; color: var(--sakura-pink); font-weight: 500; }
+
+    /* Main layout: video left, sidebar right */
+    .watch-layout { display: flex; width: 100%; height: 100%; }
+    .watch-video-col { flex: 1; display: flex; flex-direction: column; position: relative; background: #000; min-width: 0; }
+    .watch-sidebar-col { width: 340px; flex-shrink: 0; background: #110f10; border-left: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; overflow: hidden; }
+
+    /* Video area */
     .video-wrapper { position: relative; width: 100%; height: 100%; background: #000; overflow: hidden; }
     #player-video {
       display: none;
@@ -355,9 +351,118 @@
       top: 0;
       left: 0;
     }
-    
-    #player-main-area:fullscreen { background: #000 !important; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-    #player-main-area:fullscreen .video-wrapper { width: 100%; height: 100%; max-height: 100vh; aspect-ratio: auto; }
+    #player-main-area { position: relative; width: 100%; height: 100%; }
+    #player-main-area:fullscreen { background: #000 !important; }
+
+    /* Controls */
+    .player-controls { position: absolute; bottom: 0; left: 0; width: 100%; z-index: 10; background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0) 100%); color: white; padding: 1.2rem 1.5rem; transition: opacity 0.3s ease, pointer-events 0.3s ease; }
+    .progress-bar-wrapper { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+    .progress-bar { flex: 1; height: 5px; background: rgba(255,255,255,0.25); border-radius: 3px; position: relative; cursor: pointer; transition: height 0.15s ease; }
+    .progress-bar:hover { height: 7px; }
+    .progress-fill { height: 100%; background: var(--sakura-pink); border-radius: 3px; }
+    .progress-thumb { position: absolute; top: 50%; width: 13px; height: 13px; background: white; border-radius: 50%; transform: translate(-50%, -50%); opacity: 0; transition: opacity 0.2s; }
+    .progress-bar:hover .progress-thumb { opacity: 1; }
+    .time-current, .time-total { font-size: 0.8rem; color: rgba(255,255,255,0.75); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .controls-row { display: flex; align-items: center; gap: 1rem; }
+    .ctrl-btn { color: white; display: flex; align-items: center; justify-content: center; transition: color 0.15s, transform 0.15s; min-width: 36px; min-height: 36px; }
+    .ctrl-btn:hover { color: var(--sakura-pink); transform: scale(1.1); }
+    .ctrl-btn svg { width: 22px; height: 22px; }
+    .volume-ctrl { display: flex; align-items: center; gap: 0.5rem; color: rgba(255,255,255,0.8); }
+    .volume-range { width: 70px; accent-color: var(--sakura-pink); }
+    .quality-badge { margin-left: auto; font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.45rem; border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; color: rgba(255,255,255,0.75); }
+    .fullscreen-btn { font-size: 1.5rem; }
+
+    /* Sidebar tabs */
+    .sidebar-tabs { display: flex; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .sidebar-tab { flex: 1; padding: 0.9rem 0; font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.4); text-align: center; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+    .sidebar-tab.active { color: var(--sakura-pink); border-bottom-color: var(--sakura-pink); }
+    .sidebar-panel { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
+    .sidebar-panel::-webkit-scrollbar { width: 4px; }
+    .sidebar-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+    /* Episodes tab */
+    .ep-panel, .wp-panel, .list-panel { padding: 1rem; display: none; flex-direction: column; gap: 0.5rem; }
+    .ep-panel.active, .wp-panel.active, .list-panel.active { display: flex; }
+    .seasons-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .season-chip { padding: 0.35rem 0.8rem; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.6); border-radius: 20px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; border: 1px solid transparent; }
+    .season-chip.active { background: var(--sakura-pink); color: white; }
+    .ep-btn { width: 100%; text-align: left; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; font-size: 0.88rem; color: rgba(255,255,255,0.75); transition: all 0.2s; font-family: inherit; }
+    .ep-btn:hover { background: rgba(255,255,255,0.09); border-color: rgba(246,183,193,0.3); color: white; }
+    .ep-btn.active { background: var(--sakura-pink); color: white; border-color: var(--sakura-pink); }
+
+    /* Watch party tab */
+    .wp-panel h5 { color: var(--sakura-pink); font-size: 0.85rem; margin-bottom: 0.3rem; }
+    #wp-join-input { width: 100%; padding: 0.6rem 0.8rem; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; outline: none; background: rgba(255,255,255,0.06); color: white; font-family: inherit; }
+    #wp-join-input::placeholder { color: rgba(255,255,255,0.3); }
+    #wp-join-input:focus { border-color: var(--sakura-pink); }
+    .wp-room-code-box { background: rgba(255,255,255,0.05); border: 1px dashed rgba(246,183,193,0.4); border-radius: 10px; padding: 0.75rem; font-family: monospace; font-size: 0.75rem; color: var(--sakura-pink); word-break: break-all; cursor: pointer; transition: background 0.2s; }
+    .wp-room-code-box:hover { background: rgba(246,183,193,0.08); }
+    .wp-members { display: flex; flex-direction: column; gap: 0.3rem; max-height: 100px; overflow-y: auto; }
+    .wp-member-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.78rem; color: rgba(255,255,255,0.65); }
+
+    /* List action buttons */
+    .list-action-btn { width: 100%; text-align: left; padding: 0.75rem 1rem; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; font-size: 0.85rem; color: rgba(255,255,255,0.75); transition: all 0.2s; font-family: inherit; font-weight: 500; }
+    .list-action-btn:hover { background: rgba(255,255,255,0.09); color: white; }
+    .list-action-btn.is-active { background: rgba(246,183,193,0.15); color: var(--sakura-pink); border-color: rgba(246,183,193,0.3); }
+
+    /* Video overlays */
+    .video-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #1a1618, #2a2226); display: flex; align-items: center; justify-content: center; color: white; text-align: center; position: absolute; top: 0; left: 0; z-index: 2; }
+    .video-overlay-text { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .video-play-icon { width: 72px; height: 72px; background: rgba(255,255,255,0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.3s, transform 0.3s; }
+    .video-play-icon:hover { background: var(--sakura-pink); transform: scale(1.1); }
+    .video-play-icon svg { width: 36px; height: 36px; margin-left: 4px; }
+    .auto-resume-overlay, .auto-next-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); z-index: 9; display: flex; align-items: center; justify-content: center; color: white; }
+    .auto-resume-box, .auto-next-box { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; animation: fadeInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); padding: 2rem; }
+    .auto-resume-box h3, .auto-next-box h3 { font-size: 1.5rem; color: white; font-weight: 700; }
+    .auto-resume-box p, .auto-next-box p { color: var(--sakura-pink); font-size: 1rem; font-weight: 600; max-width: 300px; }
+    .auto-next-buttons { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+    .auto-next-btn { padding: 0.7rem 1.3rem; border-radius: var(--radius-round); font-size: 0.9rem; font-weight: 600; transition: var(--transition-bounce); }
+    .btn-cancel { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
+    .btn-cancel:hover { background: rgba(255,255,255,0.2); }
+    .btn-play-now { background: var(--warm-heart-red); color: white; }
+    .btn-play-now:hover { background: #d85a6a; }
+    .countdown-circle { position: relative; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; }
+    .progress-ring { position: absolute; transform: rotate(-90deg); }
+    .progress-ring__circle { transition: stroke-dashoffset 1s linear; }
+    .countdown-number { font-size: 1.6rem; font-weight: 700; color: white; }
+
+    /* Double click zones */
+    .double-click-zone { position: absolute; top: 0; height: 85%; z-index: 5; background: transparent; cursor: pointer; }
+    .zone-left { left: 0; width: 30%; }
+    .zone-center { left: 30%; width: 40%; }
+    .zone-right { right: 0; width: 30%; }
+    .double-click-ripple { position: absolute; top: 50%; transform: translateY(-50%) scale(0.8); z-index: 6; background: rgba(0,0,0,0.55); border-radius: 50%; width: 72px; height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-size: 0.75rem; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s cubic-bezier(0.175,0.885,0.32,1.275); }
+    .left-ripple { left: 15%; }
+    .right-ripple { right: 15%; }
+    .double-click-ripple.animate { opacity: 1; transform: translateY(-50%) scale(1.1); }
+    .ripple-icon svg { width: 22px; height: 22px; margin-bottom: 2px; }
+
+    /* Next episode banner (inside sidebar now, not needed as banner) */
+    .next-episode-banner { display: none; }
+
+    /* CORS warning */
+    .local-cors-warning { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10,8,9,0.97); backdrop-filter: blur(12px); z-index: 99; display: flex; align-items: center; justify-content: center; color: white; padding: 2rem; text-align: center; }
+    .warning-card { max-width: 480px; background: #1e1a1b; color: var(--text-main); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-hover); display: flex; flex-direction: column; align-items: center; gap: 1rem; border: 1px solid rgba(255,255,255,0.07); }
+    .warning-icon { font-size: 3rem; animation: bounce 2s infinite; }
+    .warning-title { font-size: 1.3rem; font-weight: 700; color: var(--warm-heart-red); }
+    .warning-desc { font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
+    .warning-steps { text-align: left; font-size: 0.82rem; background: rgba(255,255,255,0.05); padding: 1rem; border-radius: var(--radius-md); color: rgba(255,255,255,0.7); width: 100%; }
+    .warning-steps li { margin-bottom: 0.5rem; list-style-type: decimal; margin-left: 1.2rem; }
+
+    /* ── MOBILE watch page: video on top, sidebar as bottom drawer ── */
+    @media (max-width: 768px) {
+      .watch-layout { flex-direction: column; }
+      .watch-video-col { flex: none; height: 56vw; max-height: 56vw; }
+      .watch-sidebar-col { width: 100%; flex: 1; border-left: none; border-top: 1px solid rgba(255,255,255,0.07); overflow-y: auto; }
+      .watch-topbar { padding: 0.6rem 1rem; }
+      .watch-topbar-title { font-size: 0.88rem; }
+      .player-controls { padding: 0.75rem 1rem; }
+      .controls-row { gap: 0.4rem; }
+      .volume-ctrl { display: none; }
+      .quality-badge { display: none; }
+    }
+
+    /* Keyboard shortcuts modal stays */
 
     .video-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #2E2A2B, #6E6A6C); display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
     .video-play-icon { width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; backdrop-filter: blur(4px); cursor: pointer; transition: var(--transition-bounce); }
@@ -513,48 +618,61 @@
       .nav-links, .nav-actions { display: none; }
       .hamburger { display: flex; }
       .dark-mode-btn { display: flex !important; }
-      .hero-title { font-size: 2.2rem; }
-      .hero-desc { font-size: 1rem; }
+      .hero { min-height: auto; padding-top: 80px; padding-bottom: 2rem; flex-direction: column; text-align: center; }
+      .hero-content { padding-left: 0; display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; }
+      .hero-title { font-size: 1.9rem; letter-spacing: -0.5px; line-height: 1.15; margin-bottom: 1rem; }
+      .hero-desc { font-size: 0.92rem; margin-bottom: 1.5rem; }
+      .hero-buttons { flex-direction: row; flex-wrap: wrap; justify-content: center; width: 100%; gap: 0.7rem; margin-bottom: 1.5rem; }
+      .btn-primary, .btn-secondary { padding: 0.8rem 1.4rem; font-size: 0.95rem; }
       .hero-stats { gap: 1rem; }
-      .hero-buttons { flex-direction: column; align-items: center; width: 100%; }
-      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
-      .featured-card { width: 220px; height: 330px; transform: none; }
-      .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .section-title { font-size: 1.5rem; }
+      .stat-num { font-size: 1.2rem; }
+      .hero-visual { display: none; }
+      .featured-card { display: none; }
+      .section-header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .section-title { font-size: 1.3rem; }
+      .section-icon { font-size: 1.4rem; }
       .footer-top { flex-direction: column; }
       .footer-links { gap: 2rem; }
       .container { padding: 0 1rem; }
-      .anime-section { padding: 2.5rem 0; }
-      .anime-section.lavender-bg { margin: 1rem 0.5rem; border-radius: 24px; }
-      :root { --card-width: 160px; }
+      .anime-section { padding: 2rem 0; }
+      .anime-section.lavender-bg { margin: 0.75rem 0.5rem; border-radius: 20px; }
+      :root { --card-width: 148px; }
       .bottom-tab-bar { display: block; }
-      .toast-container { bottom: calc(60px + 1rem); right: 50%; transform: translateX(50%); align-items: center; }
-      .fab-scroll-top { bottom: calc(60px + 1rem); }
-      .hero { min-height: 70vh; }
-      .hero-visual { margin-top: 1.5rem; }
+      .toast-container { bottom: calc(60px + 0.75rem); right: 50%; transform: translateX(50%); align-items: center; }
+      .fab-scroll-top { bottom: calc(60px + 0.75rem); right: 1rem; }
+      .body { padding-bottom: 60px; }
       body { padding-bottom: 60px; }
-      .search-overlay { padding-top: 10vh; }
-      #search-input { font-size: 1.1rem; padding: 1rem 3rem 1rem 3.5rem; }
-      .search-results { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-      .genre-chips { padding-bottom: 0.5rem; gap: 0.6rem; }
-      .genre-chip { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
-      .list-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
-      .list-section { padding: 2.5rem 0; }
+      .search-overlay { padding-top: 8vh; }
+      #search-input { font-size: 1rem; padding: 0.9rem 3rem 0.9rem 3.2rem; }
+      .search-results { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+      .genre-section { padding: 1rem 0; }
+      .genre-chips { padding-bottom: 0.4rem; gap: 0.5rem; }
+      .genre-chip { padding: 0.45rem 0.75rem; font-size: 0.8rem; }
+      .list-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 1rem; }
+      .list-section { padding: 2rem 0; }
+      .list-tabs { gap: 1rem; overflow-x: auto; }
+      .list-tab { font-size: 0.9rem; white-space: nowrap; }
+      .navbar { height: 60px; }
+      .navbar.scrolled { height: 56px; }
+      .logo-kanji { font-size: 1.5rem; }
+      .logo-text { font-size: 1rem; }
+      .logo-sub { font-size: 0.72rem; }
+      .hero-badge { font-size: 0.75rem; padding: 0.3rem 0.75rem; margin-bottom: 1rem; }
     }
     @media (max-width: 480px) {
-      :root { --card-width: 140px; }
-      .hero-title { font-size: 1.8rem; }
-      .hero-badge { font-size: 0.78rem; }
-      .nav-inner { padding: 0 1rem; }
+      :root { --card-width: 130px; }
+      .hero-title { font-size: 1.6rem; }
+      .nav-inner { padding: 0 0.85rem; }
       .modal-card { padding: 1.5rem; }
+      .hero-buttons { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { justify-content: center; }
     }
     /* Bottom sheet modals on mobile */
     @media (max-width: 768px) {
       .modal-overlay { align-items: flex-end; padding: 0; }
-      .modal-card { width: 100%; max-width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; transform: translateY(40px); max-height: 90vh; overflow-y: auto; padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom)); }
+      .modal-card { width: 100%; max-width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; transform: translateY(40px); max-height: 92vh; overflow-y: auto; padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom)); }
       .modal-overlay.active .modal-card { transform: translateY(0); }
       .modal-card::before { content: ''; display: block; width: 40px; height: 4px; background: var(--light-gray-pink); border-radius: 2px; margin: 0 auto 1.5rem; }
-      .shortcuts-modal-card { max-height: 85vh; }
     }
   </style>
 </head>
@@ -793,228 +911,204 @@
     </div>
   </section>
 
-  <!-- ─── VIDEO PLAYER MODAL ─── -->
-  <div class="player-modal" id="player-modal">
-    <div class="player-backdrop" id="player-backdrop"></div>
-    <div class="player-container layout-split">
-      <button class="player-close" id="player-close" aria-label="Kapat">✕</button>
-      <div class="player-main" id="player-main-area">
-        
-        <div class="video-wrapper">
-          <video id="player-video" class="player-video" preload="metadata" playsinline crossorigin="anonymous"></video>
-          
-          <div class="player-header" id="player-header">
-            <div class="player-info">
-              <h2 class="player-title" id="player-title">Anime Adı</h2>
-              <p class="player-meta" id="player-meta">Bölüm 1 · HD</p>
-            </div>
-          </div>
+  <!-- ─── WATCH PAGE (full screen, slides up over everything) ─── -->
+  <div class="watch-page" id="player-modal">
 
-          <!-- Invisible Click Detection Zones (Fixed Layout) -->
-          <div class="double-click-zone zone-left" id="zone-left"></div>
-          <div class="double-click-zone zone-center" id="zone-center"></div>
-          <div class="double-click-zone zone-right" id="zone-right"></div>
+    <!-- Top bar -->
+    <div class="watch-topbar" id="player-header">
+      <button class="watch-back-btn" id="player-close" aria-label="Geri Dön">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+      </button>
+      <div class="watch-topbar-info">
+        <div class="watch-topbar-title" id="player-title">Anime Adı</div>
+        <div class="watch-topbar-meta" id="player-meta">Bölüm seçin</div>
+      </div>
+    </div>
 
-          <!-- YouTube Style Double Click Rewind/Forward Indicators -->
-          <div class="double-click-ripple left-ripple" id="ripple-left">
-            <div class="ripple-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
-            </div>
-            <span>-10sn</span>
-          </div>
-          <div class="double-click-ripple right-ripple" id="ripple-right">
-            <div class="ripple-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
-            </div>
-            <span>+10sn</span>
-          </div>
+    <!-- Main layout -->
+    <div class="watch-layout">
 
-          <!-- Auto Next Episode Overlay -->
-          <div class="auto-next-overlay" id="auto-next-overlay" style="display: none;">
-            <div class="auto-next-box">
-              <h3>Sıradaki Bölüm Başlıyor</h3>
-              <p id="auto-next-ep-name">Sezon 1 · Bölüm 2</p>
-              <div class="countdown-circle">
-                <svg class="progress-ring" width="80" height="80">
-                  <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.2)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
-                  <circle class="progress-ring__circle" stroke="var(--sakura-pink)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40" id="countdown-ring"/>
-                </svg>
-                <span class="countdown-number" id="countdown-number">5</span>
-              </div>
-              <div class="auto-next-buttons">
-                <button class="auto-next-btn btn-cancel" id="auto-next-cancel">İptal Et</button>
-                <button class="auto-next-btn btn-play-now" id="auto-next-play-now">Hemen Oyna</button>
-              </div>
-            </div>
-          </div>
+      <!-- Left: video -->
+      <div class="watch-video-col">
+        <div id="player-main-area" style="width:100%;height:100%;position:relative;">
+          <div class="video-wrapper">
+            <video id="player-video" preload="metadata" playsinline crossorigin="anonymous"></video>
 
-          <!-- Auto Resume Progress Overlay -->
-          <div class="auto-resume-overlay" id="auto-resume-overlay" style="display: none;">
-            <div class="auto-resume-box">
-              <h3>⏱️ Kaldığın Yerden Devam Et</h3>
-              <p id="auto-resume-text">Sezon 1 · Bölüm 1 - 00:00 saniyesinde kalmıştın.</p>
-              <div class="auto-next-buttons" style="margin-top: 1rem;">
-                <button class="auto-next-btn btn-cancel" id="btn-resume-cancel">Yeniden Başlat</button>
-                <button class="auto-next-btn btn-play-now" id="btn-resume-confirm">Devam Et 🌸</button>
+            <!-- Click zones -->
+            <div class="double-click-zone zone-left" id="zone-left"></div>
+            <div class="double-click-zone zone-center" id="zone-center"></div>
+            <div class="double-click-zone zone-right" id="zone-right"></div>
+
+            <!-- Ripples -->
+            <div class="double-click-ripple left-ripple" id="ripple-left">
+              <div class="ripple-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></div>
+              <span>-10sn</span>
+            </div>
+            <div class="double-click-ripple right-ripple" id="ripple-right">
+              <div class="ripple-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></div>
+              <span>+10sn</span>
+            </div>
+
+            <!-- Auto next overlay -->
+            <div class="auto-next-overlay" id="auto-next-overlay" style="display:none;">
+              <div class="auto-next-box">
+                <h3>Sıradaki Bölüm Başlıyor</h3>
+                <p id="auto-next-ep-name">Sezon 1 · Bölüm 2</p>
+                <div class="countdown-circle">
+                  <svg class="progress-ring" width="80" height="80">
+                    <circle class="progress-ring__circle-bg" stroke="rgba(255,255,255,0.2)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40"/>
+                    <circle class="progress-ring__circle" stroke="var(--sakura-pink)" stroke-width="6" fill="transparent" r="34" cx="40" cy="40" id="countdown-ring"/>
+                  </svg>
+                  <span class="countdown-number" id="countdown-number">5</span>
+                </div>
+                <div class="auto-next-buttons">
+                  <button class="auto-next-btn btn-cancel" id="auto-next-cancel">İptal Et</button>
+                  <button class="auto-next-btn btn-play-now" id="auto-next-play-now">Hemen Oyna</button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Local CORS Warning Card if using file:// protocol -->
-          <div class="local-cors-warning" id="local-cors-warning" style="display: none;">
-            <div class="warning-card">
-              <div class="warning-icon">⚠️</div>
-              <h3 class="warning-title">Yerel Sunucu Gerekli</h3>
-              <p class="warning-desc">
-                HTML dosyasını doğrudan çift tıklayarak çalıştırıyorsunuz. Tarayıcıların güvenlik politikaları (CORS) nedeniyle yerel sunucu olmadan <strong>.m3u8</strong> uzantılı HLS videoları oynatılamaz.
-              </p>
-              <ul class="warning-steps">
-                <li><strong>VS Code kullanıyorsanız:</strong> "Live Server" eklentisini kurun ve sağ alttaki "Go Live" butonuna basın.</li>
-                <li><strong>Python kullanıyorsanız:</strong> Klasörde terminali açıp <code>python -m http.server 8000</code> yazın ve tarayıcıdan <code>http://localhost:8000</code> adresine gidin.</li>
-                <li><strong>Diğer:</strong> Klasörü herhangi bir yerel sunucu (Wamp, Xampp, npx serve vb.) üzerinden çalıştırın.</li>
-              </ul>
-              <button class="auto-next-btn btn-play-now" style="width: 100%; padding: 0.8rem;" onclick="document.getElementById('local-cors-warning').style.display='none'">Yine de Kapat ve Dene 🌸</button>
-            </div>
-          </div>
-
-          <div class="video-placeholder" id="video-placeholder">
-            <div class="video-overlay-text">
-              <div class="video-play-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            <!-- Auto resume overlay -->
+            <div class="auto-resume-overlay" id="auto-resume-overlay" style="display:none;">
+              <div class="auto-resume-box">
+                <h3>⏱️ Kaldığın Yerden Devam Et</h3>
+                <p id="auto-resume-text">Sezon 1 · Bölüm 1 - 00:00 kalmıştın.</p>
+                <div class="auto-next-buttons">
+                  <button class="auto-next-btn btn-cancel" id="btn-resume-cancel">Yeniden Başlat</button>
+                  <button class="auto-next-btn btn-play-now" id="btn-resume-confirm">Devam Et 🌸</button>
+                </div>
               </div>
-              <h3 id="video-anime-title">Kimi no Na wa</h3>
-              <p>Sağ taraftan bir sezon ve bölüm seçin.</p>
             </div>
-          </div>
 
-          <!-- Absolute Overlay Controls -->
-          <div class="player-controls" id="player-controls">
-            <div class="progress-bar-wrapper">
-              <div class="progress-bar" id="progress-bar">
-                <div class="progress-fill" id="progress-fill" style="width:0%"></div>
-                <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>
+            <!-- CORS warning -->
+            <div class="local-cors-warning" id="local-cors-warning" style="display:none;">
+              <div class="warning-card">
+                <div class="warning-icon">⚠️</div>
+                <h3 class="warning-title">Yerel Sunucu Gerekli</h3>
+                <p class="warning-desc">HTML dosyasını doğrudan çift tıklayarak çalıştırıyorsunuz. CORS politikaları nedeniyle <strong>.m3u8</strong> dosyaları oynatılamaz.</p>
+                <ul class="warning-steps">
+                  <li><strong>VS Code:</strong> "Live Server" eklentisi → "Go Live"</li>
+                  <li><strong>Python:</strong> <code>python -m http.server 8000</code></li>
+                  <li><strong>Diğer:</strong> Wamp, Xampp, npx serve vb.</li>
+                </ul>
+                <button class="auto-next-btn btn-play-now" style="width:100%;padding:0.7rem;" onclick="document.getElementById('local-cors-warning').style.display='none'">Yine de Dene 🌸</button>
               </div>
-              <span class="time-current" id="time-current">00:00</span>
-              <span class="time-total" id="time-total">00:00</span>
             </div>
-            
-            <div class="controls-row">
-              <button class="ctrl-btn" id="ctrl-prev-ep" aria-label="Önceki Bölüm">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-              </button>
-              <button class="ctrl-btn" id="ctrl-rewind" aria-label="10 Saniye Geri">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg>
-              </button>
-              <button class="ctrl-btn" id="ctrl-play" aria-label="Oynat/Durdur">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-              </button>
-              <button class="ctrl-btn" id="ctrl-forward" aria-label="10 Saniye İleri">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg>
-              </button>
-              <button class="ctrl-btn" id="ctrl-next-ep" aria-label="Sonraki Bölüm">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-              </button>
-              <div class="volume-ctrl">
-                <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-                <input type="range" id="volume-range" min="0" max="100" value="80" class="volume-range" />
-              </div>
-              
-              <span class="quality-badge">HD</span>
 
-              <div class="speed-ctrl" style="display: flex; align-items: center;">
-                <select id="ctrl-speed" style="background: white; color: var(--text-main); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); font-weight: 600; padding: 0.2rem 0.5rem; outline: none; cursor: pointer; font-size: 0.8rem; font-family: inherit; transition: var(--transition-fast);" aria-label="Oynatma Hızı">
+            <!-- Placeholder -->
+            <div class="video-placeholder" id="video-placeholder">
+              <div class="video-overlay-text">
+                <div class="video-play-icon">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </div>
+                <h3 id="video-anime-title" style="color:white;margin:0;">Anime Seç</h3>
+                <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;">Sağdaki panelden sezon ve bölüm seçin</p>
+              </div>
+            </div>
+
+            <!-- Player controls -->
+            <div class="player-controls" id="player-controls">
+              <div class="progress-bar-wrapper">
+                <div class="progress-bar" id="progress-bar">
+                  <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+                  <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>
+                </div>
+                <span class="time-current" id="time-current">00:00</span>
+                <span class="time-total" id="time-total">00:00</span>
+              </div>
+              <div class="controls-row">
+                <button class="ctrl-btn" id="ctrl-prev-ep" aria-label="Önceki Bölüm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg></button>
+                <button class="ctrl-btn" id="ctrl-rewind" aria-label="10sn Geri"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
+                <button class="ctrl-btn" id="ctrl-play" aria-label="Oynat/Durdur" style="width:48px;height:48px;background:rgba(255,255,255,0.12);border-radius:50%;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+                <button class="ctrl-btn" id="ctrl-forward" aria-label="10sn İleri"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
+                <button class="ctrl-btn" id="ctrl-next-ep" aria-label="Sonraki Bölüm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg></button>
+                <div class="volume-ctrl">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                  <input type="range" id="volume-range" min="0" max="100" value="80" class="volume-range"/>
+                </div>
+                <span class="quality-badge">HD</span>
+                <select id="ctrl-speed" style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:6px;font-weight:600;padding:0.2rem 0.4rem;outline:none;cursor:pointer;font-size:0.78rem;font-family:inherit;">
                   <option value="0.5">0.5x</option>
                   <option value="1" selected>1.0x</option>
                   <option value="1.25">1.25x</option>
                   <option value="1.5">1.5x</option>
                   <option value="2">2.0x</option>
                 </select>
+                <button class="ctrl-btn" id="ctrl-shortcuts" aria-label="Kısayollar">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="6" y1="8" x2="6" y2="8"/><line x1="10" y1="8" x2="10" y2="8"/><line x1="14" y1="8" x2="14" y2="8"/><line x1="18" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="6" y2="12"/><line x1="10" y1="12" x2="18" y2="12"/><line x1="6" y1="16" x2="18" y2="16"/></svg>
+                </button>
+                <button class="ctrl-btn fullscreen-btn" id="ctrl-fullscreen" aria-label="Tam Ekran"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
               </div>
-
-              <button class="ctrl-btn" id="ctrl-shortcuts" aria-label="Klavye Kısayolları" title="Klavye Kısayolları">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
-                  <rect x="2" y="4" width="20" height="16" rx="2" ry="2"/>
-                  <line x1="6" y1="8" x2="6" y2="8"/>
-                  <line x1="10" y1="8" x2="10" y2="8"/>
-                  <line x1="14" y1="8" x2="14" y2="8"/>
-                  <line x1="18" y1="8" x2="18" y2="8"/>
-                  <line x1="6" y1="12" x2="6" y2="12"/>
-                  <line x1="10" y1="12" x2="18" y2="12"/>
-                  <line x1="6" y1="16" x2="18" y2="16"/>
-                </svg>
-              </button>
-
-              <button class="ctrl-btn fullscreen-btn" id="ctrl-fullscreen" aria-label="Tam Ekran">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-              </button>
             </div>
           </div>
         </div>
-
       </div>
-      <div class="player-sidebar">
-        <!-- Birlikte İzle Paneli -->
-        <div class="watch-party-panel" style="padding: 1.25rem; border-bottom: 1px solid var(--light-gray-pink); background: var(--cream-white);">
-          <h4 style="font-size: 0.95rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.4rem; color: var(--warm-heart-red);">
-            <span>🌸</span> Birlikte İzle (Watch Party)
-          </h4>
-          
-          <div id="wp-setup-container" style="display: flex; flex-direction: column; gap: 0.6rem;">
-            <button id="wp-create-btn" class="login-btn" style="width: 100%; padding: 0.5rem; font-size: 0.85rem; box-shadow: none; border-radius: var(--radius-sm);">Oda Oluştur ✨</button>
-            <div style="display: flex; gap: 0.4rem; align-items: center;">
-              <input type="text" id="wp-join-input" placeholder="Oda Kodunu Yapıştır" style="flex: 1; padding: 0.4rem 0.6rem; font-size: 0.8rem; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); outline: none;" />
-              <button id="wp-join-btn" class="ep-btn" style="width: auto; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600; margin: 0; background: white; border-radius: var(--radius-sm);">Katıl</button>
-            </div>
+
+      <!-- Right: sidebar with tabs -->
+      <div class="watch-sidebar-col">
+        <div class="sidebar-tabs">
+          <button class="sidebar-tab active" data-panel="ep-panel-content">📺 Bölümler</button>
+          <button class="sidebar-tab" data-panel="wp-panel-content">🌸 Party</button>
+          <button class="sidebar-tab" data-panel="list-panel-content">📌 Liste</button>
+        </div>
+        <div class="sidebar-panel">
+
+          <!-- Episodes panel -->
+          <div class="ep-panel active" id="ep-panel-content">
+            <div class="seasons-row" id="seasons-list"></div>
+            <div id="episodes-list" style="display:flex;flex-direction:column;gap:0.4rem;"></div>
+            <button id="back-to-seasons" style="display:none;"></button>
+            <span id="sidebar-title" style="display:none;"></span>
           </div>
 
-          <div id="wp-active-container" style="display: none; flex-direction: column; gap: 0.6rem;">
-            <div style="background: white; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px dashed var(--sakura-pink); font-size: 0.8rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
-                <span style="font-weight: 600; color: var(--text-muted);">Oda Kodu:</span>
-                <button id="wp-copy-code" style="color: var(--warm-heart-red); font-weight: 600; cursor: pointer; font-size: 0.75rem;">Kopyala 📋</button>
+          <!-- Watch party panel -->
+          <div class="wp-panel" id="wp-panel-content">
+            <h5>🌸 Birlikte İzle</h5>
+            <div id="wp-setup-container" style="display:flex;flex-direction:column;gap:0.6rem;">
+              <button id="wp-create-btn" class="btn-play-now" style="width:100%;padding:0.7rem;border-radius:10px;font-family:inherit;">Oda Oluştur ✨</button>
+              <div style="display:flex;gap:0.4rem;">
+                <input type="text" id="wp-join-input" placeholder="Oda kodunu yapıştır…"/>
+                <button id="wp-join-btn" style="padding:0.6rem 0.9rem;background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.15);border-radius:8px;font-weight:600;font-size:0.82rem;white-space:nowrap;cursor:pointer;font-family:inherit;">Katıl</button>
               </div>
-              <div id="wp-room-id-display" style="word-break: break-all; font-family: monospace; background: var(--light-gray-pink); padding: 0.25rem; border-radius: 4px; font-size: 0.7rem; color: var(--text-main);"></div>
             </div>
-            
-            <div style="font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
-              <span>Rolünüz: <strong id="wp-role-display" style="color: var(--warm-heart-red);">İzleyici</strong></span>
-              <span id="wp-status-dot" style="display: inline-flex; align-items: center; gap: 0.25rem;"><span style="width: 8px; height: 8px; background: #34A853; border-radius: 50%;"></span> Bağlı</span>
+            <div id="wp-active-container" style="display:none;flex-direction:column;gap:0.7rem;">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;">
+                  <span style="font-size:0.75rem;color:rgba(255,255,255,0.5);font-weight:600;">ODA KODU</span>
+                  <button id="wp-copy-code" style="font-size:0.75rem;color:var(--sakura-pink);font-weight:600;cursor:pointer;">Kopyala 📋</button>
+                </div>
+                <div class="wp-room-code-box" id="wp-room-id-display"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:rgba(255,255,255,0.6);">
+                <span>Rol: <strong id="wp-role-display" style="color:var(--sakura-pink);">İzleyici</strong></span>
+                <span id="wp-status-dot" style="display:flex;align-items:center;gap:0.3rem;"><span style="width:7px;height:7px;background:#34A853;border-radius:50%;display:inline-block;"></span>Bağlı</span>
+              </div>
+              <div>
+                <div style="font-size:0.72rem;color:rgba(255,255,255,0.4);margin-bottom:0.3rem;font-weight:600;">ÜYELER</div>
+                <div class="wp-members" id="wp-members-list"></div>
+              </div>
+              <button id="wp-leave-btn" style="width:100%;padding:0.6rem;background:rgba(232,106,122,0.12);color:var(--warm-heart-red);border:1px solid rgba(232,106,122,0.3);border-radius:8px;font-weight:600;font-size:0.82rem;cursor:pointer;font-family:inherit;">Odadan Ayrıl 🚪</button>
             </div>
-
-            <div style="max-height: 85px; overflow-y: auto; background: white; padding: 0.4rem; border-radius: var(--radius-sm); border: 1px solid var(--light-gray-pink);">
-              <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.2rem;">Üyeler:</div>
-              <div id="wp-members-list" style="display: flex; flex-direction: column; gap: 0.2rem; font-size: 0.7rem;"></div>
-            </div>
-
-            <button id="wp-leave-btn" class="ep-btn" style="width: 100%; padding: 0.4rem; font-size: 0.8rem; color: var(--warm-heart-red); border-color: var(--warm-heart-red); font-weight: 600; text-align: center; margin: 0; background: white; border-radius: var(--radius-sm);">Odadan Ayrıl 🚪</button>
           </div>
-        </div>
 
-        <div class="episodes-panel">
-          <div class="panel-header" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-            <h4 class="episodes-title" id="sidebar-title" style="margin: 0;">Sezonlar</h4>
-            <button id="back-to-seasons" style="display: none; background: none; border: none; color: var(--sakura-pink); font-weight: 600; cursor: pointer;">← Geri</button>
+          <!-- List actions panel -->
+          <div class="list-panel" id="list-panel-content">
+            <h5 style="color:rgba(255,255,255,0.5);font-size:0.75rem;font-weight:600;margin-bottom:0.3rem;">LİSTELERE EKLE</h5>
+            <button id="player-btn-watchlist" class="list-action-btn">📌 İzleneceklere Ekle</button>
+            <button id="player-btn-completed" class="list-action-btn">✔️ Bitirdiklerime Ekle</button>
+            <button id="player-btn-favorites" class="list-action-btn">❤️ Favorilere Ekle</button>
           </div>
-          <div class="seasons-list" id="seasons-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
-          <div class="episodes-list" id="episodes-list" style="display: none;"></div>
-        </div>
-        
-        <div style="padding: 1rem; border-top: 1px solid var(--light-gray-pink); display: flex; flex-direction: column; gap: 0.5rem;">
-          <button id="player-btn-watchlist" class="ep-btn" style="font-size: 0.85rem; font-weight: 600; text-align: center;">Listeye Ekle (İzlenecek) 📌</button>
-          <button id="player-btn-completed" class="ep-btn" style="font-size: 0.85rem; font-weight: 600; text-align: center;">Bitirdiklerime Ekle ✔️</button>
-          <button id="player-btn-favorites" class="ep-btn" style="font-size: 0.85rem; font-weight: 600; text-align: center;">Favorilere Ekle ❤️</button>
-        </div>
 
-        <div class="next-episode-banner" id="next-ep-banner" style="display: none;">
-          <p>Sıradaki Bölüm</p>
-          <span id="next-ep-title">Bölüm 2</span>
-          <button id="next-ep-btn" class="btn-primary" style="padding: 0.5rem 1rem; font-size:0.9rem">Hemen İzle</button>
         </div>
       </div>
     </div>
+
+    <!-- Hidden compat elements -->
+    <div id="next-ep-banner" style="display:none;"><span id="next-ep-title"></span><button id="next-ep-btn"></button></div>
+    <div id="player-backdrop" style="display:none;"></div>
   </div>
 
-  <!-- ─── SHORTCUTS DIALOG ─── -->
+    <!-- ─── SHORTCUTS DIALOG ─── -->
   <div class="modal-overlay" id="shortcuts-modal" style="z-index: 2500;">
     <div class="modal-card" style="max-width: 450px; padding: 2.5rem; text-align: left;">
       <button class="modal-close" id="shortcuts-close" aria-label="Kapat">✕</button>
@@ -1340,20 +1434,17 @@
       const updatePlayerActionButtons = () => {
         if (!currentAnimeData) return;
         const id = currentAnimeData.id;
-        
         const config = [
-          { key: 'watchlist', el: 'player-btn-watchlist', textAdd: "Listeye Ekle 📌", textRem: "Listeden Çıkar 📌", activeBg: "var(--sakura-pink)", activeColor: "white" },
-          { key: 'completed', el: 'player-btn-completed', textAdd: "Bitirenlere Ekle ✔️", textRem: "Bitirdiklerimden Çıkar ✔️", activeBg: "var(--mint-calm)", activeColor: "var(--text-main)" },
-          { key: 'favorites', el: 'player-btn-favorites', textAdd: "Favorilere Ekle ❤️", textRem: "Favorilerden Çıkar ❤️", activeBg: "var(--warm-heart-red)", activeColor: "white" }
+          { key: 'watchlist', el: 'player-btn-watchlist', textAdd: "📌 İzleneceklere Ekle", textRem: "📌 İzleneceklerden Çıkar" },
+          { key: 'completed', el: 'player-btn-completed', textAdd: "✔️ Bitirdiklerime Ekle", textRem: "✔️ Bitirdiklerimden Çıkar" },
+          { key: 'favorites', el: 'player-btn-favorites', textAdd: "❤️ Favorilere Ekle", textRem: "❤️ Favorilerden Çıkar" }
         ];
-
         config.forEach(c => {
           const btn = document.getElementById(c.el);
-          if (userLists[c.key].includes(id)) {
-            btn.textContent = c.textRem; btn.style.background = c.activeBg; btn.style.color = c.activeColor;
-          } else {
-            btn.textContent = c.textAdd; btn.style.background = ""; btn.style.color = "";
-          }
+          if (!btn) return;
+          const inList = userLists[c.key].includes(id);
+          btn.textContent = inList ? c.textRem : c.textAdd;
+          btn.classList.toggle('is-active', inList);
         });
       };
 
@@ -1540,26 +1631,32 @@
 
       const showEpisodes = (season) => {
         currentSeason = season;
-        document.getElementById('sidebar-title').textContent = `${season}. Sezon Bölümleri`;
-        document.getElementById('back-to-seasons').style.display = 'block'; document.getElementById('seasons-list').style.display = 'none';
+        // Update season chips
+        document.querySelectorAll('.season-chip').forEach(c => c.classList.toggle('active', parseInt(c.dataset.season) === season));
         const epList = document.getElementById('episodes-list'); epList.style.display = 'flex';
-        
         const maxEps = currentAnimeData.seasons[season - 1] || 0;
         epList.innerHTML = Array.from({length: maxEps}, (_, i) => `<button class="ep-btn" data-ep="${i+1}">Bölüm ${i+1}</button>`).join('');
         epList.querySelectorAll('.ep-btn').forEach(btn => btn.onclick = () => setEpisode(parseInt(btn.dataset.ep)));
       };
 
       const showSeasons = () => {
-        document.getElementById('sidebar-title').textContent = 'Sezonlar';
         document.getElementById('back-to-seasons').style.display = 'none'; document.getElementById('episodes-list').style.display = 'none'; document.getElementById('next-ep-banner').style.display = 'none';
         clearInterval(nextCountdownInterval); document.getElementById('auto-next-overlay').style.display = 'none'; document.getElementById('auto-resume-overlay').style.display = 'none';
         
         currentEp = 0; document.querySelector('.player-controls').style.opacity = '0.3'; document.querySelector('.player-controls').style.pointerEvents = 'none';
         playerVideo.style.display = 'none'; playerVideo.pause(); document.getElementById('video-placeholder').style.display = 'flex';
         
-        const seasonsList = document.getElementById('seasons-list'); seasonsList.style.display = 'flex';
-        seasonsList.innerHTML = Array.from({length: currentAnimeData.seasons.length}, (_, i) => `<button class="ep-btn season-btn" data-season="${i+1}">${i+1}. Sezon</button>`).join('');
-        seasonsList.querySelectorAll('.season-btn').forEach(btn => btn.onclick = () => showEpisodes(parseInt(btn.dataset.season)));
+        const seasonsList = document.getElementById('seasons-list'); 
+        seasonsList.innerHTML = Array.from({length: currentAnimeData.seasons.length}, (_, i) => 
+          `<button class="season-chip" data-season="${i+1}">${i+1}. Sezon</button>`
+        ).join('');
+        seasonsList.querySelectorAll('.season-chip').forEach(btn => btn.onclick = () => showEpisodes(parseInt(btn.dataset.season)));
+        
+        // Auto-switch sidebar to episodes tab
+        document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.ep-panel, .wp-panel, .list-panel').forEach(p => p.classList.remove('active'));
+        document.querySelector('.sidebar-tab[data-panel="ep-panel-content"]')?.classList.add('active');
+        document.getElementById('ep-panel-content')?.classList.add('active');
       };
       document.getElementById('back-to-seasons').onclick = showSeasons;
 
@@ -1712,9 +1809,9 @@
       });
 
       let idleTimer = null;
-      const playerContainer = document.querySelector('.player-container'), playerControls = document.getElementById('player-controls'), playerHeader = document.getElementById('player-header'), playerCloseBtn = document.getElementById('player-close');
-      const showPlayerUI = () => { playerControls.style.opacity = '1'; playerControls.style.pointerEvents = 'auto'; playerHeader.style.opacity = '1'; playerHeader.style.pointerEvents = 'auto'; playerCloseBtn.style.opacity = '1'; playerCloseBtn.style.pointerEvents = 'auto'; playerContainer.style.cursor = 'default'; };
-      const hidePlayerUI = () => { if (!playerVideo.paused && document.getElementById('auto-next-overlay').style.display !== 'flex' && document.getElementById('video-placeholder').style.display !== 'flex') { playerControls.style.opacity = '0'; playerControls.style.pointerEvents = 'none'; playerHeader.style.opacity = '0'; playerHeader.style.pointerEvents = 'none'; playerCloseBtn.style.opacity = '0'; playerCloseBtn.style.pointerEvents = 'none'; playerContainer.style.cursor = 'none'; } };
+      const playerContainer = document.getElementById('player-modal'), playerControls = document.getElementById('player-controls'), playerHeader = document.getElementById('player-header'), playerCloseBtn = document.getElementById('player-close');
+      const showPlayerUI = () => { if(playerControls) { playerControls.style.opacity = '1'; playerControls.style.pointerEvents = 'auto'; } if(playerHeader) { playerHeader.style.opacity = '1'; playerHeader.style.pointerEvents = 'auto'; } if(playerCloseBtn) { playerCloseBtn.style.opacity = '1'; playerCloseBtn.style.pointerEvents = 'auto'; } if(playerContainer) playerContainer.style.cursor = 'default'; };
+      const hidePlayerUI = () => { if (!playerVideo.paused && document.getElementById('auto-next-overlay').style.display !== 'flex' && document.getElementById('video-placeholder').style.display !== 'flex') { if(playerControls) { playerControls.style.opacity = '0'; playerControls.style.pointerEvents = 'none'; } if(playerHeader) { playerHeader.style.opacity = '0'; playerHeader.style.pointerEvents = 'none'; } if(playerCloseBtn) { playerCloseBtn.style.opacity = '0'; playerCloseBtn.style.pointerEvents = 'none'; } if(playerContainer) playerContainer.style.cursor = 'none'; } };
       const resetIdleTimer = () => { showPlayerUI(); clearTimeout(idleTimer); if (document.fullscreenElement) idleTimer = setTimeout(hidePlayerUI, 3000); };
 
       document.getElementById('player-main-area').addEventListener('mousemove', resetIdleTimer);
@@ -1726,13 +1823,10 @@
       const closePlayer = () => { 
         clearInterval(nextCountdownInterval); clearTimeout(idleTimer); document.getElementById('auto-next-overlay').style.display = 'none'; document.getElementById('auto-resume-overlay').style.display = 'none';
         if (isWatchPartyActive) leaveWatchPartyRoom();
-        if (window.hls) {
-          window.hls.destroy();
-          window.hls = null;
-        }
+        if (window.hls) { window.hls.destroy(); window.hls = null; }
         playerModal.classList.remove('active'); document.body.style.overflow = ''; playerVideo.pause(); showPlayerUI();
       };
-      document.getElementById('player-close').onclick = closePlayer; document.getElementById('player-backdrop').onclick = closePlayer;
+      document.getElementById('player-close').onclick = closePlayer;
 
       document.addEventListener('click', (e) => {
         const card = e.target.closest('.anime-card');
@@ -1955,6 +2049,16 @@
         if (e.key === '?' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
           document.getElementById('shortcuts-modal').classList.add('active');
         }
+      });
+
+      // ─── SIDEBAR TABS ───
+      document.querySelectorAll('.sidebar-tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.sidebar-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.ep-panel, .wp-panel, .list-panel').forEach(p => p.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.dataset.panel)?.classList.add('active');
+        };
       });
 
       // ─── SKELETON LOADERS: show on init, remove when populated ───
